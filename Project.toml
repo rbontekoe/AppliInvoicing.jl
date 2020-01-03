@@ -1,0 +1,4 @@
+name = "AppliInvoicing"
+uuid = "ca92cf3a-2e01-11ea-317e-f5f61dfa039c"
+authors = ["Rob Bontekoe <rbontekoe@appligate.nl>"]
+version = "0.1.0"
