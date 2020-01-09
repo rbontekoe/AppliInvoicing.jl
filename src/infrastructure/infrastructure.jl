@@ -1,7 +1,21 @@
 include("../api/api.jl")
 
-db = connect()
+@enum TableName begin
+    UNPAID
+    PAID
+end # defined enumerator for Publisher types
 
-archive(invoices::Array{UnpaidInvoice, 1}) = create(db, "UNPAID",invoices)
+# Connect
+#connect(path::String)::SQLite.DB = SQLite.DB(path)
 
-#archive(invoices::Array{PaidInvoice, 1}) = create(db, "PAID", invoices)
+#connect()::SQLite.DB = SQLite.DB()
+
+# Create
+#store(db::SQLite.DB, table::String, items::Array{T, 1} where {T <: Any}) = begin
+#   DataFrame( items ) |> SQLite.load!(db, table)
+#end # defined store
+
+# retrieve
+#retrieve(db::SQLite.DB, table::String)::DataFrame = SQLite.Query( db, "select * from $table") |> DataFrame
+
+#retrieve(db::SQLite.DB, table::String, condition::String )::DataFrame = SQLite.Query( db, "select * from $table where $condition")  |> DataFrame

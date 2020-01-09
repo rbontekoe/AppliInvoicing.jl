@@ -12,3 +12,12 @@ create(order::Order, invoice_id::String)::UnpaidInvoice = begin
 	#body_invoice = order.training
     invoice = UnpaidInvoice(invoice_id, meta, header_invoice, body_invoice)
 end
+
+create(invoice::UnpaidInvoice, stm::JournalStatement):: PaidInvoice = begin
+	meta = invoice.meta
+	header_invoice = invoice.header
+	body_invoice = invoice.body
+	stm = stm
+
+	invoice = PaidInvoice(invoice.id, meta, header_invoice, body_invoice, stm)
+end

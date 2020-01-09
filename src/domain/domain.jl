@@ -1,6 +1,18 @@
 using Dates
+
+using DataFrames
+
 using AppliSQLite
-using AppliSales# module has date functions
+
+using AppliGeneralLegder
+
+using AppliSales
+
+import AppliSQLite.DatabaseItem
+import AppliSQLite.DomainObject
+
+import AppliGeneralLegder.JournalStatement
+
 import AppliSales.Order
 import AppliSales.Training
 
@@ -39,9 +51,17 @@ struct OpentrainingItem
     OpentrainingItem(name_training, date, price_per_student, students, vat_perc) = new(name_training, date, price_per_student, students, vat_perc)
 end # defined OpentrainingItem
 
-struct UnpaidInvoice
+struct UnpaidInvoice <: DomainObject
     id::String
     meta::MetaInvoice
     header::Header
     body::OpentrainingItem
+end # defined UnpaidInvoice
+
+struct PaidInvoice <: DomainObject
+    id::String
+    meta::MetaInvoice
+    header::Header
+    body::OpentrainingItem
+    stm::JournalStatement
 end # defined UnpaidInvoice
