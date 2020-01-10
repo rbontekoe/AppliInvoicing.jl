@@ -1,3 +1,8 @@
+name = "AppliInvoicing"
+uuid = "3941c6da-33b5-11ea-2884-afa98fed5e3b"
+authors = ["Rob Bontekoe <rbontekoe@appligate.nl>"]
+version = "0.1.0"
+
 [deps]
 AppliGeneralLegder = "19dfbee0-3087-11ea-346c-6b605dc25da8"
 AppliSQLite = "9a59758e-2d3a-11ea-1945-73b7de95ad48"
