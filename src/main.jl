@@ -73,7 +73,9 @@ archive(db, "JOURNAL", [stm1, stm2, stm3])
 r = retrieve(db, "JOURNAL")
 println(r)
 
-book(db, "LEDGER", stm1)
+#import AppliGeneralLegder.book
+AppliGeneralLegder.book(db, "LEDGER", stm1)
+
 book(db, "LEDGER", stm2)
 book(db, "LEDGER", stm3)
 r = retrieve(db, "LEDGER")
@@ -106,3 +108,7 @@ archive(db, "PAID", paid_invoices)
 r = retrieve(db, "PAID")
 
 println(r.item)
+
+#f(x) = x^2
+
+#runfunction(funct, x) = f(x)
