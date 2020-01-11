@@ -2,7 +2,7 @@ module AppliInvoicing
 
 greet() = print("Hello World!")
 
-export create
+export create, process
 
 include("./infrastructure/infrastructure.jl")
 

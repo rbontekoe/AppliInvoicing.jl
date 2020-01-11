@@ -19,3 +19,22 @@ end # defined enumerator for Publisher types
 #retrieve(db::SQLite.DB, table::String)::DataFrame = SQLite.Query( db, "select * from $table") |> DataFrame
 
 #retrieve(db::SQLite.DB, table::String, condition::String )::DataFrame = SQLite.Query( db, "select * from $table where $condition")  |> DataFrame
+
+using AppliGeneralLegder
+using AppliSQLite
+
+process(orders::Array{Order, 1}) = begin
+    db = connect()
+    # get last order number
+    n = 1000
+    # create invoices
+    invoices = [create(order, "A" * string(n += 1)) for order in orders]
+    # archive invoices
+    archive(db, string(UNPAID), invoices)
+    # get invoices
+    retrieve(db, string(UNPAID))
+    # send invoices
+
+    # create journal statements
+
+end
