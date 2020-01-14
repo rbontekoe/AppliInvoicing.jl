@@ -24,19 +24,22 @@ using AppliGeneralLegder
 using AppliSQLite
 using AppliSales
 
+# get last statement number for today
+n = 0
+
 process(orders::Array{Order, 1}) = begin
-    db = connect()
+    db = connect("./invoicing.sqlite")
     # get last order number
-    n = 1000
+    m = 1000
     # create invoices
-    invoices = [create(order, "A" * string(n += 1)) for order in orders]
+    invoices = [create(order, "A" * string(m += 1)) for order in orders]
     # archive invoices
     archive(db, string(UNPAID), invoices)
 
-    # create journal statements
-    stm1 = create_statemnent("20200702", "Scrooge Investment Bank", "Invoice A1001", 1300, 8000, 1000.0, 0.0, 210.0, "LS")
-    stm2 = create_statemnent("20200702", "Duck City Chronicals", "Invoice A1002", 1300, 8000, 2000.0, 0.0, 420.0, "LS")
-    stm3 = create_statemnent("20200702", "Donalds Hardware Store", "Invoice A1003", 1300, 8000, 1000.0, 0.0, 210.0, "LS")
+    # create journal statements - DUMMY DATA
+    stm1 = create_statemnent(string(Date(now())) * "-" * string(global n += 1), "Scrooge Investment Bank", "Invoice A1001", 1300, 8000, 1000.0, 0.0, 210.0, "Learn Smiling")
+    stm2 = create_statemnent(string(Date(now())) * "-" * string(global n += 1), "Duck City Chronicals", "Invoice A1002", 1300, 8000, 2000.0, 0.0, 420.0, "Smile")
+    stm3 = create_statemnent(string(Date(now())) * "-" * string(global n += 1), "Donalds Hardware Store", "Invoice A1003", 1300, 8000, 1000.0, 0.0, 210.0, "LS")
     stms = [stm1, stm2, stm3]
     return stms
 
@@ -44,10 +47,11 @@ end
 
 #process(bankstm::Array(Bankstatement, 1) = begin
 process() = begin
-    db = connect()
-    # read JournalStatements
-    bstm1 = create_statemnent("20200702", "Duck City Chronicals", "Invoice A1002", 1150, 1300, 2420.0, 0.0, 0.0, "LS")
-    bstm2 = create_statemnent("20200703", "Donalds Hardware Store","Bill A1003", 1150, 1300, 1210.0, 0.0, 0.0, "LS")
+    db = connect("./invoicing.sqlite")
+
+    # read JournalStatements  - DUMMY DATA
+    bstm1 = create_statemnent(string(Date(now())) * "-" * string(global n += 1), "Duck City Chronicals", "Invoice A1002", 1150, 1300, 2420.0, 0.0, 0.0, "LS")
+    bstm2 = create_statemnent(string(Date(now())) * "-" * string(global n += 1), "Donalds Hardware Store","Bill A1003", 1150, 1300, 1210.0, 0.0, 0.0, "LS")
     stms = [bstm1, bstm2]
 
     archive(db, "LEDGER", stms)
