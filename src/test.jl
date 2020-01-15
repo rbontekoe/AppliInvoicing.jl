@@ -8,6 +8,18 @@ invoices = AppliSales.process()
 
 result = process(invoices)
 
-using AppliGeneralLegder
+stms = process()
 
-result2 = process()
+using AppliGeneralLedger
+
+AppliGeneralLedger.process(result)
+
+AppliGeneralLedger.process(stms)
+
+using AppliSQLite
+
+db = connect("./ledger.sqlite")
+
+r1 = retrieve(db, "JOURNAL")
+
+r2 = retrieve(db, "LEDGER")

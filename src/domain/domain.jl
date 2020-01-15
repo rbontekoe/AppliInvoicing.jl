@@ -1,33 +1,20 @@
 using Dates
 
-#using DataFrames
-
-#using AppliSQLite
-
-#using AppliGeneralLegder
-
 using AppliSales
 
-#import AppliSQLite.DatabaseItem
-
-import AppliGeneralLegder.JournalStatement
-import AppliSales.Order
-import AppliSales.Training
-
-# Meta data
 struct MetaInvoice
     order_id::String
     training_id::String
-    date::DateTime
+    date::DateTime #1
     currency::String
     currency_ratio::Float64
     # Constructors
-    MetaInvoice(order_id, training_id) = new(order_id, training_id, now(), "€", 1.0)
+    MetaInvoice(order_id, training_id) = new(order_id, training_id, now(), "€", 1.0) #2
     MetaInvoice(order_id, training_id, date, currency, currency_ratio) = new(order_id, training_id, now(), currency, currency_ratio)
-end # defined MetaInvoice
+end # MetaInvoice
 
-struct Header
-    invoice_nbr::String
+struct Header #3
+    invoice_nbr::String #4
     name::String
     address::String
     zip::String
@@ -36,7 +23,7 @@ struct Header
     order_ref::String
     name_contact::String
     email_contact::String
-end # defined HeaderInvoice
+end # Header
 
 struct OpentrainingItem
     name_training::String
@@ -47,7 +34,7 @@ struct OpentrainingItem
     # constructors
     OpentrainingItem(name_training, date, price_per_student, students) = new(name_training, date, price_per_student, students, 0.21)
     OpentrainingItem(name_training, date, price_per_student, students, vat_perc) = new(name_training, date, price_per_student, students, vat_perc)
-end # defined OpentrainingItem
+end # OpentrainingItem
 
 struct UnpaidInvoice
     id::String
@@ -56,10 +43,17 @@ struct UnpaidInvoice
     body::OpentrainingItem
 end # defined UnpaidInvoice
 
+struct BankStatement
+	date::DateTime
+	descr::String
+	iban::String
+	amount::Float64
+end
+
 struct PaidInvoice
     id::String
     meta::MetaInvoice
     header::Header
     body::OpentrainingItem
-    stm::JournalStatement
+    entry::BankStatement
 end # defined UnpaidInvoice
