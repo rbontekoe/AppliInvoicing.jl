@@ -23,3 +23,16 @@ create(invoice::UnpaidInvoice, stm::BankStatement)::PaidInvoice = begin
 
 	return PaidInvoice(id, meta, header, body, stm)
 end
+
+function conv2entry(inv)
+    id = string(Date(now())) * "-" * string(global n += 1)
+    customer_id = inv.header.name
+    invoice_nbr = inv.header.invoice_nbr
+    from = 1300
+    to = 8000
+    debit = inv.body.price_per_student * length(inv.body.students)
+    credit = 0.0
+    vat = debit * inv.body.vat_perc
+    descr = inv.body.name_training
+    return create_journal_entry(id, customer_id, invoice_nbr, from, to, debit, credit, vat, descr)
+end

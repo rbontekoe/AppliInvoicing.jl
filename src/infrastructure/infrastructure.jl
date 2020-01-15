@@ -20,12 +20,17 @@ process(orders::Array{Order, 1}) = begin
     # archive invoices
     archive(db, string(UNPAID), invoices)
 
-    # create journal statements - DUMMY DATA
+    # create journal entries - DUMMY DATA
+    #==
     entry1 = create_journal_entry(string(Date(now())) * "-" * string(global n += 1), "Scrooge Investment Bank", "Invoice A1001", 1300, 8000, 1000.0, 0.0, 210.0, "Learn Smiling")
     entry2 = create_journal_entry(string(Date(now())) * "-" * string(global n += 1), "Duck City Chronicals", "Invoice A1002", 1300, 8000, 2000.0, 0.0, 420.0, "Smile")
     entry3 = create_journal_entry(string(Date(now())) * "-" * string(global n += 1), "Donalds Hardware Store", "Invoice A1003", 1300, 8000, 1000.0, 0.0, 210.0, "LS")
     entries = [entry1, entry2, entry3]
     return entries
+    ==#
+
+    # create journal entries form orders
+    return entries = [conv2entry(inv) for inv in invoices]
 
 end
 

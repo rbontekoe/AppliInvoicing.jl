@@ -4,22 +4,26 @@ include("./infrastructure/infrastructure.jl")
 
 using AppliSales
 
-invoices = AppliSales.process()
+orders = AppliSales.process()
 
-result = process(invoices)
+journal_entries_unpaid_invoices = process(orders)
 
-stms = process()
+journal_entries_paid_invoices = process()
 
+#==
 using AppliGeneralLedger
 
-AppliGeneralLedger.process(result)
+AppliGeneralLedger.process(journal_entries_unpaid_invoices)
 
-AppliGeneralLedger.process(stms)
+AppliGeneralLedger.process(journal_entries_paid_invoices)
 
 using AppliSQLite
 
 db = connect("./ledger.sqlite")
 
 r1 = retrieve(db, "JOURNAL")
+println(r1)
 
 r2 = retrieve(db, "LEDGER")
+println(r2)
+==#
