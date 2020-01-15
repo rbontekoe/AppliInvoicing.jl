@@ -5,7 +5,7 @@ using AppliSales
 struct MetaInvoice
     order_id::String
     training_id::String
-    date::DateTime #1
+    date::DateTime
     currency::String
     currency_ratio::Float64
     # Constructors
@@ -13,8 +13,8 @@ struct MetaInvoice
     MetaInvoice(order_id, training_id, date, currency, currency_ratio) = new(order_id, training_id, now(), currency, currency_ratio)
 end # MetaInvoice
 
-struct Header #3
-    invoice_nbr::String #4
+struct Header
+    invoice_nbr::String
     name::String
     address::String
     zip::String
