@@ -44,7 +44,7 @@ struct UnpaidInvoice
 end # defined UnpaidInvoice
 
 struct BankStatement
-	date::DateTime
+	date::Date
 	descr::String
 	iban::String
 	amount::Float64
