@@ -37,7 +37,7 @@ process(path::String, invoices::Array{UnpaidInvoice, 1}, stms::Array{BankStateme
 
     # create array with potential paid invoices based on received bank statements
     paid_invoices = []
-    for unpaid_invoice in unpaid_invoices
+    for unpaid_invoice in invoices
       for stm in stms # get potential paid invoices
         if occursin(unpaid_invoice.id, stm.descr) # row[2] = contains invoice number) # from DataFrame row
           push!(paid_invoices, create(unpaid_invoice, stm))
