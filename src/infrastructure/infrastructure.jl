@@ -7,12 +7,14 @@ end # defined enumerator for Publisher types
 
 using AppliGeneralLedger
 using AppliSQLite
+using CSV
 
 # get last statement number for today
 n = 0
 
-process(orders::Array{Order, 1}) = begin
-    db = connect("./invoicing.sqlite")
+process(path::String, orders::Array{Order, 1}) = begin
+    # connect to db
+    db = connect(path)
 
     # get last order number
     m = 1000
@@ -29,19 +31,9 @@ process(orders::Array{Order, 1}) = begin
 end
 
 #process(bankstm::Array(Bankstatement, 1) = begin
-process(stms::Array{BankStatement, 1}) = begin
-
-    # read CSV with bank staements
-    df = CSV.read("bank.csv")
-
-    # connect to database
-    db = connect("./invoicing.sqlite")
-
-    # get unpaid invoices
-    unpaid_records = retrieve(db, "UNPAID")
-
-    # convert dataframe to array with unpaid records
-    unpaid_invoices = [row[1] for row in eachrow(unpaid_records.item)]
+process(path::String, invoices::Array{UnpaidInvoice, 1}, stms::Array{BankStatement, 1}) = begin
+    # connect to db
+    db = connect(path)
 
     # create array with potential paid invoices based on received bank statements
     paid_invoices = []
@@ -54,26 +46,38 @@ process(stms::Array{BankStatement, 1}) = begin
     end
 
     # convert to array with PaidInvoice's
-
     paid_invoices = convert(Array{PaidInvoice, 1}, paid_invoices)
 
     # archive PaidInvoice's
-
-    archive(db, "PAID", paid_invoices)
+    archive(db, string(PAID), paid_invoices)
 
     # return jarray with JournalEntry's
-
     return entries = [conv2entry(inv, 1150, 1300) for inv in paid_invoices]
 end
 
 
-read_bank_statements() = begin
+read_bank_statements(path::String) = begin
     # read CSV with bank staements
-    df = CSV.read("bank.csv")
+    df = CSV.read(path)
 
     # create array with BankStatement's
     stms = [BankStatement(row[1], row[2], row[3], row[4]) for row in eachrow(df)]
 
     # return array
     return stms
+end
+
+
+retrieve_unpaid_invoices(path::String)::Array{UnpaidInvoice, 1} = begin
+    # connect to database
+    db = connect(path)
+
+    # retrieve unpaid recors
+    unpaid_records = retrieve(db, string(UNPAID))
+
+    # covert dataframe to array with UnpaidInvoice's. row[1] contains invoice nbr
+    unpaid_invoices = [row[1] for row in eachrow(unpaid_records.item)]
+
+    # get unpaid invoices
+    return unpaid_invoices
 end
