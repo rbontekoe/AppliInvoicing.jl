@@ -27,4 +27,4 @@ stms = read_bank_statements(PATH_CSV)
 unpaid_invoices = retrieve_unpaid_invoices(PATH_DB)
 
 # process unpaid invoices and bank staements
-journal_entries_2 = process(PATH, unpaid_invoices, stms)
+journal_entries_2 = process(PATH_DB, unpaid_invoices, stms)
