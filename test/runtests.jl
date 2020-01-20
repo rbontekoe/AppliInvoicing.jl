@@ -1,4 +1,4 @@
-# runtest.jl
+# runtests.jl
 
 include("../src/infrastructure/infrastructure.jl")
 
