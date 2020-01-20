@@ -51,7 +51,7 @@ process(path::String, invoices::Array{UnpaidInvoice, 1}, stms::Array{BankStateme
     # archive PaidInvoice's
     archive(db, string(PAID), paid_invoices)
 
-    # return jarray with JournalEntry's
+    # return array with JournalEntry's
     return entries = [conv2entry(inv, 1150, 1300) for inv in paid_invoices]
 end
 

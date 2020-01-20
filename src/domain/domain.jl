@@ -55,5 +55,5 @@ struct PaidInvoice
     meta::MetaInvoice
     header::Header
     body::OpentrainingItem
-    entry::BankStatement
+    stm::BankStatement
 end # defined UnpaidInvoice
