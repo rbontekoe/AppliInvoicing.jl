@@ -6,15 +6,14 @@ include("../api/api.jl")
 end # defined enumerator for Publisher types
 
 using AppliGeneralLedger
-using AppliSQLite
 using CSV
 
 # get last statement number for today
 n = 0
 
-process(path::String, orders::Array{Order, 1}) = begin
+process(db, orders::Array{Order, 1}) = begin
     # connect to db
-    db = connect(path)
+    #db = connect(SQLite.DB, path)
 
     # get last order number
     m = 1000 #ToDo
@@ -30,9 +29,9 @@ process(path::String, orders::Array{Order, 1}) = begin
 end
 
 #process(bankstm::Array(Bankstatement, 1) = begin
-process(path::String, invoices::Array{UnpaidInvoice, 1}, stms::Array{BankStatement, 1}) = begin
+process(db, invoices::Array{UnpaidInvoice, 1}, stms::Array{BankStatement, 1}) = begin
     # connect to db
-    db = connect(path)
+    #db = connect(SQLite.DB, path)
 
     # create array with potential paid invoices based on received bank statements
     potential_paid_invoices = []
@@ -64,9 +63,9 @@ read_bank_statements(path::String) = begin
 end
 
 
-retrieve_unpaid_invoices(path::String)::Array{UnpaidInvoice, 1} = begin
+retrieve_unpaid_invoices(db)::Array{UnpaidInvoice, 1} = begin
     # connect to the database
-    db = connect(path)
+    #db = connect(SQLite.DB, path)
 
     # retrieve unpaid invoices as dataframe
     unpaid_records = retrieve(db, string(UNPAID))

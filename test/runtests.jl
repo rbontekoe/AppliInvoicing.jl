@@ -5,6 +5,8 @@ include("../src/infrastructure/infrastructure.jl")
 using Test
 using DataFrames
 using Dates
+using AppliSQLite
+using SQLite
 
 const PATH_DB = "./invoicing.sqlite"
 const PATH_CSV = "./bank.csv"
@@ -19,7 +21,7 @@ const PATH_CSV = "./bank.csv"
 end
 
 @testset "UnpaidInvoices" begin
-    db = connect(PATH_DB)
+    db = connect(SQLite.DB, PATH_DB)
     using AppliSales
     orders = AppliSales.process()
     invoices = [create(order, "A" * string(1001)) for order in orders]
@@ -35,13 +37,16 @@ end
 end
 
 @testset "Retrieve UnpaidInvoices" begin
-    db = connect(PATH_DB)
+    m = 1000
+
+    db = connect(SQLite.DB, PATH_DB)
     using AppliSales
     orders = AppliSales.process()
-    invoices_to_save = [create(order, "A" * string(1001)) for order in orders]
+    invoices_to_save = [create(order, "A" * string(m += 1)) for order in orders]
     archive(db, "UNPAID", invoices_to_save)
     unpaid_invoices = retrieve(db, "UNPAID") # returns dataframe
     invoices = [row[1] for row in eachrow(unpaid_invoices.item)] # dataframe to array
+
     @test invoices[1].id == "A1001"
     @test invoices[1].meta.currency_ratio == 1.0
     @test invoices[1].header.name == "Scrooge Investment Bank"
@@ -59,7 +64,7 @@ end
 
     m = 1000
 
-    db = connect(PATH_DB)
+    db = connect(SQLite.DB, PATH_DB)
     using AppliSales
     orders = AppliSales.process()
     invoices_to_save = [create(order, "A" * string(m += 1)) for order in orders]
@@ -75,7 +80,12 @@ end
         end
       end
     end
+
+    #r = [filter(x -> occursin(x.id, stm.descr), invoices) for stm in stms]
+
     paid_invoices = convert(Array{PaidInvoice, 1}, potential_paid_invoices)
+    #paid_invoices = convert(Array{PaidInvoice, 1}, r)
+
     @test length(paid_invoices) == 1
     stmt = `rm invoicing.sqlite`
     run(stmt)
