@@ -4,7 +4,6 @@ include("../src/infrastructure/infrastructure.jl")
 
 using Test
 using DataFrames
-using Dates
 using AppliSQLite
 
 const PATH_DB = "./invoicing.sqlite"

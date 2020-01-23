@@ -5,6 +5,7 @@ include("../api/api.jl")
     PAID
 end # defined enumerator for Publisher types
 
+using AppliSQLite
 using AppliGeneralLedger
 using CSV
 
