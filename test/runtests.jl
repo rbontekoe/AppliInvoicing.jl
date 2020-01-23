@@ -6,7 +6,6 @@ using Test
 using DataFrames
 using Dates
 using AppliSQLite
-using SQLite
 
 const PATH_DB = "./invoicing.sqlite"
 const PATH_CSV = "./bank.csv"
@@ -21,7 +20,7 @@ const PATH_CSV = "./bank.csv"
 end
 
 @testset "UnpaidInvoices" begin
-    db = connect(SQLite.DB, PATH_DB)
+    db = connect(PATH_DB)
     using AppliSales
     orders = AppliSales.process()
     invoices = [create(order, "A" * string(1001)) for order in orders]
@@ -39,7 +38,7 @@ end
 @testset "Retrieve UnpaidInvoices" begin
     m = 1000
 
-    db = connect(SQLite.DB, PATH_DB)
+    db = connect(PATH_DB)
     using AppliSales
     orders = AppliSales.process()
     invoices_to_save = [create(order, "A" * string(m += 1)) for order in orders]
@@ -64,7 +63,7 @@ end
 
     m = 1000
 
-    db = connect(SQLite.DB, PATH_DB)
+    db = connect(PATH_DB)
     using AppliSales
     orders = AppliSales.process()
     invoices_to_save = [create(order, "A" * string(m += 1)) for order in orders]

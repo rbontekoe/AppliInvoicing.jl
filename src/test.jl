@@ -7,7 +7,6 @@ TEST WORKFLOW AppliInvoicing
 include("./infrastructure/infrastructure.jl")
 
 using AppliSQLite
-using SQLite
 
 #using Debugger
 
@@ -23,7 +22,7 @@ orders = AppliSales.process()
 nn = 1000
 invoices = [create(order, "A" * string(global nn += 1)) for order in orders]
 
-db = connect(SQLite.DB, PATH_DB)
+db = connect(PATH_DB)
 
 # process orders
 journal_entries_1 = process(db, orders)
