@@ -5,10 +5,6 @@ include("../api/api.jl")
     PAID
 end # defined enumerator for Publisher types
 
-using AppliSQLite
-using AppliGeneralLedger
-using CSV
-
 # get last statement number for today
 n = 0
 
@@ -65,9 +61,6 @@ end
 
 
 retrieve_unpaid_invoices(db)::Array{UnpaidInvoice, 1} = begin
-    # connect to the database
-    #db = connect(SQLite.DB, path)
-
     # retrieve unpaid invoices as dataframe
     unpaid_records = retrieve(db, string(UNPAID))
 

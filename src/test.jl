@@ -6,16 +6,11 @@ TEST WORKFLOW AppliInvoicing
 
 include("./infrastructure/infrastructure.jl")
 
-using AppliSQLite
-
 #using Debugger
 
 const PATH_DB = "./invoicing.sqlite"
 
 const PATH_CSV = "./bank.csv"
-
-# get orders
-using AppliSales
 
 # get orders
 orders = AppliSales.process()
