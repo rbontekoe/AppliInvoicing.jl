@@ -22,6 +22,8 @@ db = connect(PATH_DB)
 # process orders
 journal_entries_1 = process(db, orders)
 
+println(journal_entries_1)
+
 # get Bank statements and the unpaid invoices
 stms = read_bank_statements(PATH_CSV)
 
@@ -29,6 +31,8 @@ unpaid_invoices = retrieve_unpaid_invoices(db)
 
 # process the unpaid invoices and bank statements
 journal_entries_2 = process(db, unpaid_invoices, stms)
+
+println(journal_entries_1)
 
 cmd = `rm ./invoicing.sqlite`
 

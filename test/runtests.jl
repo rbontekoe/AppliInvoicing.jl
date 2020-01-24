@@ -5,9 +5,9 @@ include("../src/infrastructure/infrastructure.jl")
 using Test
 using DataFrames
 using AppliSQLite
-
-const PATH_DB = "./invoicing.sqlite"
-const PATH_CSV = "./bank.csv"
+using AppliSales
+using AppliGeneralLedger
+using CSV
 
 # TEST MODEL
 @testset "Orders" begin
@@ -19,10 +19,14 @@ const PATH_CSV = "./bank.csv"
 end
 
 @testset "UnpaidInvoices" begin
-    db = connect(PATH_DB)
+    m = 1000
+    db = connect("./invoicing.sqlite")
     using AppliSales
     orders = AppliSales.process()
-    invoices = [create(order, "A" * string(1001)) for order in orders]
+    invoices_to_save = [create(order, "A" * string(m += 1)) for order in orders]
+    archive(db, "UNPAID", invoices_to_save)
+    invoices = retrieve_unpaid_invoices(db)
+
     @test invoices[1].id == "A1001"
     @test invoices[1].meta.currency_ratio == 1.0
     @test invoices[1].header.name == "Scrooge Investment Bank"
@@ -30,14 +34,13 @@ end
     @test length(invoices[1].body.students) == 1
     @test invoices[1].body.students[1] == "Scrooge McDuck"
     @test invoices[1].body.vat_perc == 0.21
-    stmt = `rm invoicing.sqlite`
-    run(stmt)
+    cmd = `rm invoicing.sqlite`
+    run(cmd)
 end
 
 @testset "Retrieve UnpaidInvoices" begin
     m = 1000
-
-    db = connect(PATH_DB)
+    db = connect("./invoicing.sqlite")
     using AppliSales
     orders = AppliSales.process()
     invoices_to_save = [create(order, "A" * string(m += 1)) for order in orders]
@@ -52,8 +55,15 @@ end
     @test invoices[1].body.price_per_student == 1000.0
     @test invoices[1].body.students[1] == "Scrooge McDuck"
     @test invoices[1].body.vat_perc == 0.21
-    stmt = `rm invoicing.sqlite`
-    run(stmt)
+    cmd = `rm invoicing.sqlite`
+    run(cmd)
+end
+
+@testset "Retrieve BankStatment from CSV" begin
+    stms = read_bank_statements("./bank.csv")
+    @test length(stms) == 2
+    @test stms[1].amount == 2420.0
+    @test stms[2].amount == 1210.0
 end
 
 @testset "JounalEntry's" begin
@@ -62,13 +72,13 @@ end
 
     m = 1000
 
-    db = connect(PATH_DB)
+    db = connect("./invoicing.sqlite")
     using AppliSales
     orders = AppliSales.process()
     invoices_to_save = [create(order, "A" * string(m += 1)) for order in orders]
     archive(db, "UNPAID", invoices_to_save)
     unpaid_invoices = retrieve(db, "UNPAID")
-    invoices = [row[1] for row in eachrow(unpaid_invoices.item)]
+    invoices = unpaid_invoices.item
 
     potential_paid_invoices = []
     for unpaid_invoice in invoices
@@ -79,12 +89,56 @@ end
       end
     end
 
-    #r = [filter(x -> occursin(x.id, stm.descr), invoices) for stm in stms]
+    #potential_paid_invoices = [filter(x -> occursin(x.id, stm.descr)[1], invoices) for stm in stms]
 
-    paid_invoices = convert(Array{PaidInvoice, 1}, potential_paid_invoices)
-    #paid_invoices = convert(Array{PaidInvoice, 1}, r)
+    @test length(potential_paid_invoices) == 1
+    @test potential_paid_invoices[1].id == "A1002"
+    @test potential_paid_invoices[1].stm.amount == 2420.0
 
-    @test length(paid_invoices) == 1
-    stmt = `rm invoicing.sqlite`
-    run(stmt)
+    cmd = `rm invoicing.sqlite`
+    run(cmd)
+end
+
+@testset "process(db, orders)" begin
+    db = connect("./invoicing.sqlite")
+    orders = AppliSales.process()
+    entries = process(db, orders)
+    @test length(entries) == 3
+    @test entries[1].from == 1300
+    @test entries[1].to == 8000
+    @test entries[1].debit == 1000.0
+    @test entries[1].vat == 210.0
+    @test entries[1].descr == "Learn Smiling"
+
+    cmd = `rm invoicing.sqlite`
+    run(cmd)
+end
+
+@testset "retrieve_unpaid_invoices(db)" begin
+    db = connect("./invoicing.sqlite")
+    orders = AppliSales.process()
+    entries = process(db, orders)
+    unpaid_invoices = retrieve_unpaid_invoices(db)
+    @test length(unpaid_invoices) == 3
+    @test unpaid_invoices[1].id == "A1001"
+    
+    cmd = `rm invoicing.sqlite`
+    run(cmd)
+end
+
+@testset "process(db, unpaid_invoices" begin
+    db = connect("./invoicing.sqlite")
+    orders = AppliSales.process()
+    process(db, orders)
+    unpaid_invoices = retrieve_unpaid_invoices(db)
+    stm1 = BankStatement(Date(2020-01-15), "Duck City Chronicals Invoice A1002", "NL93INGB", 2420.0)
+    stms = [stm1]
+    entries = process(db, unpaid_invoices, stms)
+    @test length(entries) == 1
+    @test entries[1].from == 1150
+    @test entries[1].to == 1300
+    @test entries[1].debit == 2420.0
+
+    cmd = `rm invoicing.sqlite`
+    run(cmd)
 end
