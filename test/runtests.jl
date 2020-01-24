@@ -59,12 +59,14 @@ end
     run(cmd)
 end
 
+#==
 @testset "Retrieve BankStatment from CSV" begin
     stms = read_bank_statements("./bank.csv")
     @test length(stms) == 2
     @test stms[1].amount == 2420.0
     @test stms[2].amount == 1210.0
 end
+==#
 
 @testset "JounalEntry's" begin
     stm1 = BankStatement(Date(2020-01-15), "Duck City Chronicals Invoice A1002", "NL93INGB", 2420.0)
@@ -121,7 +123,7 @@ end
     unpaid_invoices = retrieve_unpaid_invoices(db)
     @test length(unpaid_invoices) == 3
     @test unpaid_invoices[1].id == "A1001"
-    
+
     cmd = `rm invoicing.sqlite`
     run(cmd)
 end
