@@ -8,9 +8,9 @@ end # defined enumerator for Publisher types
 # get last statement number for today
 n = 0
 
-process(db, orders::Array{Order, 1}) = begin
+process(path, orders::Array{Order, 1}) = begin
     # connect to db
-    #db = connect(SQLite.DB, path)
+    db = connect(path)
 
     # get last order number
     m = 1000 #ToDo
@@ -26,9 +26,9 @@ process(db, orders::Array{Order, 1}) = begin
 end
 
 #process(bankstm::Array(Bankstatement, 1) = begin
-process(db, invoices::Array{UnpaidInvoice, 1}, stms::Array{BankStatement, 1}) = begin
+process(path, invoices::Array{UnpaidInvoice, 1}, stms::Array{BankStatement, 1}) = begin
     # connect to db
-    #db = connect(SQLite.DB, path)
+    db = connect(path)
 
     # create array with potential paid invoices based on received bank statements
     potential_paid_invoices = []
@@ -60,7 +60,10 @@ read_bank_statements(path::String) = begin
 end
 
 
-retrieve_unpaid_invoices(db)::Array{UnpaidInvoice, 1} = begin
+retrieve_unpaid_invoices(path)::Array{UnpaidInvoice, 1} = begin
+    # connect to db
+    db = connect(path)
+
     # retrieve unpaid invoices as dataframe
     unpaid_records = retrieve(db, string(UNPAID))
 

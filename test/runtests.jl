@@ -20,12 +20,13 @@ end
 
 @testset "UnpaidInvoices" begin
     m = 1000
-    db = connect("./invoicing.sqlite")
+    path = "./invoicing.sqlite"
+    db = connect(path)
     using AppliSales
     orders = AppliSales.process()
     invoices_to_save = [create(order, "A" * string(m += 1)) for order in orders]
     archive(db, "UNPAID", invoices_to_save)
-    invoices = retrieve_unpaid_invoices(db)
+    invoices = retrieve_unpaid_invoices(path)
 
     @test invoices[1].id == "A1001"
     @test invoices[1].meta.currency_ratio == 1.0
@@ -40,7 +41,8 @@ end
 
 @testset "Retrieve UnpaidInvoices" begin
     m = 1000
-    db = connect("./invoicing.sqlite")
+    path = "./invoicing.sqlite"
+    db = connect(path)
     using AppliSales
     orders = AppliSales.process()
     invoices_to_save = [create(order, "A" * string(m += 1)) for order in orders]
@@ -74,7 +76,8 @@ end
 
     m = 1000
 
-    db = connect("./invoicing.sqlite")
+    path = "./invoicing.sqlite"
+    db = connect(path)
     using AppliSales
     orders = AppliSales.process()
     invoices_to_save = [create(order, "A" * string(m += 1)) for order in orders]
@@ -102,9 +105,10 @@ end
 end
 
 @testset "process(db, orders)" begin
-    db = connect("./invoicing.sqlite")
+    path = "./invoicing.sqlite"
+    db = connect(path)
     orders = AppliSales.process()
-    entries = process(db, orders)
+    entries = process(path, orders)
     @test length(entries) == 3
     @test entries[1].from == 1300
     @test entries[1].to == 8000
@@ -117,10 +121,11 @@ end
 end
 
 @testset "retrieve_unpaid_invoices(db)" begin
-    db = connect("./invoicing.sqlite")
+    path = "./invoicing.sqlite"
+    db = connect(path)
     orders = AppliSales.process()
-    entries = process(db, orders)
-    unpaid_invoices = retrieve_unpaid_invoices(db)
+    entries = process(path, orders)
+    unpaid_invoices = retrieve_unpaid_invoices(path)
     @test length(unpaid_invoices) == 3
     @test unpaid_invoices[1].id == "A1001"
 
@@ -129,13 +134,14 @@ end
 end
 
 @testset "process(db, unpaid_invoices" begin
-    db = connect("./invoicing.sqlite")
+    path = "./invoicing.sqlite"
+    db = connect(path)
     orders = AppliSales.process()
-    process(db, orders)
-    unpaid_invoices = retrieve_unpaid_invoices(db)
+    process(path, orders)
+    unpaid_invoices = retrieve_unpaid_invoices(path)
     stm1 = BankStatement(Date(2020-01-15), "Duck City Chronicals Invoice A1002", "NL93INGB", 2420.0)
     stms = [stm1]
-    entries = process(db, unpaid_invoices, stms)
+    entries = process(path, unpaid_invoices, stms)
     @test length(entries) == 1
     @test entries[1].from == 1150
     @test entries[1].to == 1300
