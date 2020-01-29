@@ -1,19 +1,11 @@
 # This file is machine-generated - editing it directly is not advised
 
 [[AppliGeneralLedger]]
-deps = ["AppliSQLite", "DataFrames", "Dates"]
-git-tree-sha1 = "fed4f30038ee6216e719fc2c8dbe9128c7ce5931"
+deps = ["DataFrames", "Dates", "SQLite"]
+git-tree-sha1 = "12f12d1318482bc1f6428cc5506e3d4159213911"
 repo-rev = "master"
 repo-url = "https://github.com/rbontekoe/AppliGeneralLedger.jl"
 uuid = "153ef306-36d1-11ea-1f0d-e3f38f84e10d"
-version = "0.1.0"
-
-[[AppliSQLite]]
-deps = ["DataFrames", "Dates", "SQLite"]
-git-tree-sha1 = "430358d32e893866e083b826930963297f444997"
-repo-rev = "master"
-repo-url = "https://github.com/rbontekoe/AppliSQLite.jl"
-uuid = "9a59758e-2d3a-11ea-1945-73b7de95ad48"
 version = "0.1.0"
 
 [[AppliSales]]
@@ -155,7 +147,7 @@ uuid = "69de0a69-1ddd-5017-9359-2bf0b02dc9f0"
 version = "0.3.10"
 
 [[Pkg]]
-deps = ["Dates", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "REPL", "Random", "SHA", "UUIDs"]
+deps = ["Dates", "LibGit2", "Libdl", "Logging", "Markdown", "Printf", "REPL", "Random", "SHA", "Test", "UUIDs"]
 uuid = "44cfe95a-1eb2-52ea-b672-e2afdf69b78f"
 
 [[PooledArrays]]
