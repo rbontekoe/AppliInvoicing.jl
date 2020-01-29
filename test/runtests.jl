@@ -4,7 +4,7 @@ include("../src/infrastructure/infrastructure.jl")
 
 using Test
 using DataFrames
-using AppliSQLite
+using SQLite
 using AppliSales
 using AppliGeneralLedger
 using CSV

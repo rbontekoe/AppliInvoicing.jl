@@ -1,4 +1,5 @@
 include("../api/api.jl")
+include("./db.jl")
 
 @enum TableName begin
     UNPAID
