@@ -1,8 +1,9 @@
-using AppliSales
-using AppliGeneralLedger
-using CSV
 using Dates
+using SQLite
 using DataFrames
+using CSV
+using AppliGeneralLedger
+using AppliSales # needed for test.jl and runtests.jl
 
 struct MetaInvoice
     order_id::String
@@ -43,14 +44,14 @@ struct UnpaidInvoice
     meta::MetaInvoice
     header::Header
     body::OpentrainingItem
-end # defined UnpaidInvoice
+end # UnpaidInvoice
 
 struct BankStatement
 	date::Date
 	descr::String
 	iban::String
 	amount::Float64
-end
+end # BankStatement
 
 struct PaidInvoice
     id::String
@@ -58,4 +59,4 @@ struct PaidInvoice
     header::Header
     body::OpentrainingItem
     stm::BankStatement
-end # defined UnpaidInvoice
+end # PaidInvoice

@@ -2,9 +2,9 @@
 
 include("../domain/domain.jl")
 
-using AppliSales
-import AppliSales.Order
+import AppliSales.Order # Order is not exported but is refered to in the next function
 
+# create unpaid invoices from an order
 create(order::Order, invoice_id::String)::UnpaidInvoice = begin
     meta = MetaInvoice(order.id, order.training.id)
     header_invoice = Header(
@@ -13,6 +13,7 @@ create(order::Order, invoice_id::String)::UnpaidInvoice = begin
 	return UnpaidInvoice(invoice_id, meta, header_invoice, body_invoice)
 end
 
+# create paid invoice from a bank statement
 create(invoice::UnpaidInvoice, stm::BankStatement)::PaidInvoice = begin
 	id = invoice.id
 	meta = invoice.meta
@@ -22,6 +23,8 @@ create(invoice::UnpaidInvoice, stm::BankStatement)::PaidInvoice = begin
 	return PaidInvoice(id, meta, header, body, stm)
 end
 
+# create journal entries from an unpaid invoice
+# the create_journal_entry function is exported by AppliGeneralLedger
 function conv2entry(inv::UnpaidInvoice, from::Int, to::Int)
     id = string(Date(now())) * "-" * string(global n += 1)
     customer_id = inv.header.name
@@ -33,6 +36,8 @@ function conv2entry(inv::UnpaidInvoice, from::Int, to::Int)
     return create_journal_entry(id, customer_id, invoice_nbr, from, to, debit, credit, vat, descr)
 end
 
+# create journal entries from a paid invoice
+# the create_journal_entry function is exported by AppliGeneralLedger
 function conv2entry(inv::PaidInvoice, from::Int, to::Int)
     id = string(Date(now())) * "-" * string(global n += 1)
     customer_id = inv.header.name

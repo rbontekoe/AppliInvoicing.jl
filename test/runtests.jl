@@ -3,11 +3,6 @@
 include("../src/infrastructure/infrastructure.jl")
 
 using Test
-using DataFrames
-using SQLite
-using AppliSales
-using AppliGeneralLedger
-using CSV
 
 # TEST MODEL
 @testset "Orders" begin
@@ -19,12 +14,12 @@ using CSV
 end
 
 @testset "UnpaidInvoices" begin
-    m = 1000
+    invnbr = 1000
     path = "./invoicing.sqlite"
     db = connect(path)
     using AppliSales
     orders = AppliSales.process()
-    invoices_to_save = [create(order, "A" * string(m += 1)) for order in orders]
+    invoices_to_save = [create(order, "A" * string(invnbr += 1)) for order in orders]
     archive(db, "UNPAID", invoices_to_save)
     invoices = retrieve_unpaid_invoices(path)
 
@@ -40,12 +35,12 @@ end
 end
 
 @testset "Retrieve UnpaidInvoices" begin
-    m = 1000
+    invnbr = 1000
     path = "./invoicing.sqlite"
     db = connect(path)
     using AppliSales
     orders = AppliSales.process()
-    invoices_to_save = [create(order, "A" * string(m += 1)) for order in orders]
+    invoices_to_save = [create(order, "A" * string(invnbr += 1)) for order in orders]
     archive(db, "UNPAID", invoices_to_save)
     unpaid_invoices = retrieve(db, "UNPAID") # returns dataframe
     invoices = [row[1] for row in eachrow(unpaid_invoices.item)] # dataframe to array
@@ -61,26 +56,24 @@ end
     run(cmd)
 end
 
-#==
 @testset "Retrieve BankStatment from CSV" begin
     stms = read_bank_statements("./bank.csv")
     @test length(stms) == 2
     @test stms[1].amount == 2420.0
     @test stms[2].amount == 1210.0
 end
-==#
 
 @testset "JounalEntry's" begin
     stm1 = BankStatement(Date(2020-01-15), "Duck City Chronicals Invoice A1002", "NL93INGB", 2420.0)
     stms = [stm1]
 
-    m = 1000
+    invnbr = 1000
 
     path = "./invoicing.sqlite"
     db = connect(path)
-    using AppliSales
+    #using AppliSales
     orders = AppliSales.process()
-    invoices_to_save = [create(order, "A" * string(m += 1)) for order in orders]
+    invoices_to_save = [create(order, "A" * string(invnbr += 1)) for order in orders]
     archive(db, "UNPAID", invoices_to_save)
     unpaid_invoices = retrieve(db, "UNPAID")
     invoices = unpaid_invoices.item
@@ -93,8 +86,6 @@ end
         end
       end
     end
-
-    #potential_paid_invoices = [filter(x -> occursin(x.id, stm.descr)[1], invoices) for stm in stms]
 
     @test length(potential_paid_invoices) == 1
     @test potential_paid_invoices[1].id == "A1002"
