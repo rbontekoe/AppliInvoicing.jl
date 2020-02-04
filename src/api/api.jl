@@ -24,7 +24,7 @@ create(invoice::UnpaidInvoice, stm::BankStatement)::PaidInvoice = begin
 end
 
 # create journal entries from an unpaid invoice
-# the create_journal_entry function is exported by AppliGeneralLedger
+# the create_journal_entry function is exported by AppliGeneralLedger test module
 function conv2entry(inv::UnpaidInvoice, from::Int, to::Int)
     id = string(Date(now())) * "-" * string(global n += 1)
     customer_id = inv.header.name

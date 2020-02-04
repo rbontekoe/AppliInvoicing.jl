@@ -1,12 +1,15 @@
 # infrastructure.jl
 
+using CSV
+using DataFrames
+
 include("../api/api.jl")
-include("./db.jl")
+include("./db.jl") # database functions
 
 @enum TableName begin
     UNPAID
     PAID
-end # defined enumerator for Publisher types
+end # enumerator for TableName types
 
 # get last statement number for today
 n = 0
@@ -16,17 +19,17 @@ process(path, orders::Array{Order, 1}) = begin
     db = connect(path)
 
     # get last order number
-    m = 1000 #ToDo
+    invnbr = 1000 #ToDo
 
     # create invoices
-    invoices = [create(order, "A" * string(m += 1)) for order in orders]
+    invoices = [create(order, "A" * string(invnbr += 1)) for order in orders]
 
     # archive invoices
     archive(db, string(UNPAID), invoices)
 
     # create journal entries from invoices
     return entries = [conv2entry(inv, 1300, 8000) for inv in invoices]
-end
+end # process(path, orders::Array{Order, 1})
 
 #process(bankstm::Array(Bankstatement, 1) = begin
 process(path, invoices::Array{UnpaidInvoice, 1}, stms::Array{BankStatement, 1}) = begin
@@ -51,17 +54,16 @@ process(path, invoices::Array{UnpaidInvoice, 1}, stms::Array{BankStatement, 1}) 
 
     # return array with JournalEntry's
     return entries = [conv2entry(inv, 1150, 1300) for inv in paid_invoices]
-end
-
+end # process(path, invoices::Array{UnpaidInvoice, 1}, stms::Array{BankStatement, 1})
 
 read_bank_statements(path::String) = begin
     # read the CSV file containing bank statements
     df = CSV.read(path) # returns a DataFrame
 
     # return an array with BankStatement's
+    # row[1] is the first value of row, row[2] the second value, etc.
     return [BankStatement(row[1], row[2], row[3], row[4]) for row in eachrow(df)]
-end
-
+end # read_bank_statements
 
 retrieve_unpaid_invoices(path)::Array{UnpaidInvoice, 1} = begin
     # connect to db
@@ -72,9 +74,9 @@ retrieve_unpaid_invoices(path)::Array{UnpaidInvoice, 1} = begin
 
     # convert the dataframe to an array with UnpaidInvoice's.
     # row is an array with one element, which is an array.
-    # row[1] is the the content of element, the UnpaidInvoice.
+    # row[1] is the the content of the element, the UnpaidInvoice.
     unpaid_invoices = [row[1] for row in eachrow(unpaid_records.item)]
 
     # return the array with UnpaidInvoice's that
     return unpaid_invoices
-end
+end # retrieve_unpaid_invoices

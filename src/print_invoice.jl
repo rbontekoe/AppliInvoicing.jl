@@ -1,5 +1,12 @@
+#  print_invoice.jl
+
+# Example code to print invoices
+
 # print header
+
 using Printf # package for formatting numbers
+
+include("./infrastructure/infrastructure.jl")
 
 function show_invoice(invoice::UnpaidInvoice)
     basic(invoice)
@@ -25,7 +32,7 @@ function basic(invoice)
     println()
     #print("INVOICE")
     #println("Date: $(Date(inv.date))")
-    println("invoice number: $(invoice.header.invoice_nbr)")
+    println("Invoice number: $(invoice.header.invoice_nbr)")
     println("="^40)
     println("Reference: $(invoice.header.order_ref) - $(string(Date(invoice.body.date)))")
     println()

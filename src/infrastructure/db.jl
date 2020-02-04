@@ -1,5 +1,7 @@
 # db.jl
 
+using SQLite
+
 # Database item
 struct DatabaseItem{T}
    time::Float64

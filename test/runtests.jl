@@ -15,7 +15,7 @@ end
 
 @testset "UnpaidInvoices" begin
     invnbr = 1000
-    path = "./invoicing.sqlite"
+    path = "./test_invoicing.sqlite"
     db = connect(path)
     using AppliSales
     orders = AppliSales.process()
@@ -30,13 +30,13 @@ end
     @test length(invoices[1].body.students) == 1
     @test invoices[1].body.students[1] == "Scrooge McDuck"
     @test invoices[1].body.vat_perc == 0.21
-    cmd = `rm invoicing.sqlite`
+    cmd = `rm test_invoicing.sqlite`
     run(cmd)
 end
 
 @testset "Retrieve UnpaidInvoices" begin
     invnbr = 1000
-    path = "./invoicing.sqlite"
+    path = "./test_invoicing.sqlite"
     db = connect(path)
     using AppliSales
     orders = AppliSales.process()
@@ -52,7 +52,8 @@ end
     @test invoices[1].body.price_per_student == 1000.0
     @test invoices[1].body.students[1] == "Scrooge McDuck"
     @test invoices[1].body.vat_perc == 0.21
-    cmd = `rm invoicing.sqlite`
+
+    cmd = `rm test_invoicing.sqlite`
     run(cmd)
 end
 
@@ -69,7 +70,7 @@ end
 
     invnbr = 1000
 
-    path = "./invoicing.sqlite"
+    path = "./test_invoicing.sqlite"
     db = connect(path)
     #using AppliSales
     orders = AppliSales.process()
@@ -91,12 +92,12 @@ end
     @test potential_paid_invoices[1].id == "A1002"
     @test potential_paid_invoices[1].stm.amount == 2420.0
 
-    cmd = `rm invoicing.sqlite`
+    cmd = `rm test_invoicing.sqlite`
     run(cmd)
 end
 
 @testset "process(db, orders)" begin
-    path = "./invoicing.sqlite"
+    path = "./test_invoicing.sqlite"
     db = connect(path)
     orders = AppliSales.process()
     entries = process(path, orders)
@@ -107,12 +108,12 @@ end
     @test entries[1].vat == 210.0
     @test entries[1].descr == "Learn Smiling"
 
-    cmd = `rm invoicing.sqlite`
+    cmd = `rm test_invoicing.sqlite`
     run(cmd)
 end
 
 @testset "retrieve_unpaid_invoices(db)" begin
-    path = "./invoicing.sqlite"
+    path = "./test_invoicing.sqlite"
     db = connect(path)
     orders = AppliSales.process()
     entries = process(path, orders)
@@ -120,12 +121,12 @@ end
     @test length(unpaid_invoices) == 3
     @test unpaid_invoices[1].id == "A1001"
 
-    cmd = `rm invoicing.sqlite`
+    cmd = `rm test_invoicing.sqlite`
     run(cmd)
 end
 
 @testset "process(db, unpaid_invoices" begin
-    path = "./invoicing.sqlite"
+    path = "./test_invoicing.sqlite"
     db = connect(path)
     orders = AppliSales.process()
     process(path, orders)
@@ -138,6 +139,6 @@ end
     @test entries[1].to == 1300
     @test entries[1].debit == 2420.0
 
-    cmd = `rm invoicing.sqlite`
+    cmd = `rm test_invoicing.sqlite`
     run(cmd)
 end

@@ -1,7 +1,4 @@
 using Dates
-using SQLite
-using DataFrames
-using CSV
 using AppliGeneralLedger
 using AppliSales # needed for test.jl and runtests.jl
 
