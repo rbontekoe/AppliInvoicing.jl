@@ -4,7 +4,24 @@ include("../domain/domain.jl")
 
 import AppliSales.Order # Order is not exported but is refered to in the next function
 
-# create unpaid invoices from an order
+"""
+    create(order::Order, invoice_id::String)::UnpaidInvoice
+
+Create a UnpaidInvoice from an AppliSales.Order
+
+# Example
+```jldoctest
+julia> using AppliInvoicing
+
+julia> using AppliSales
+
+julia> orders = AppliSales.process()
+
+julia> invnbr = 1000
+
+julia> invoices = [create(order, "A" * string(global invnbr += 1)) for order in orders]
+```
+"""
 create(order::Order, invoice_id::String)::UnpaidInvoice = begin
     meta = MetaInvoice(order.id, order.training.id)
     header_invoice = Header(
@@ -13,7 +30,42 @@ create(order::Order, invoice_id::String)::UnpaidInvoice = begin
 	return UnpaidInvoice(invoice_id, meta, header_invoice, body_invoice)
 end
 
-# create paid invoice from a bank statement
+"""
+    create(invoice::UnpaidInvoice, stm::BankStatement)::PaidInvoice
+
+Create a PaidInvoice from an UnpaidInvoice.
+
+# Example
+```jldoctest
+julia> using Dates
+
+julia> using AppliInvoicing
+
+julia> using AppliSales
+
+julia> orders = AppliSales.process()
+
+julia> invnbr = 1000
+
+julia> unpaid_invoices = [create(order, "A" * string(global invnbr += 1)) for order in orders]
+
+julia> import AppliInvoicing.BankStatement
+
+julia> stms = [BankStatement(Date(2020-01-15), "Duck City Chronicals Invoice A1002", "NL93INGB", 2420.0)]
+
+julia> potential_paid_invoices = []
+
+julia> for unpaid_invoice in unpaid_invoices
+    		for stm in stms # get potential paid invoices
+        		if occursin(unpaid_invoice.id, stm.descr) # description contains invoice number
+                	push!(potential_paid_invoices, create(unpaid_invoice, stm))
+        		end
+        	end
+        end
+
+julia> potential_paid_invoices
+```
+"""
 create(invoice::UnpaidInvoice, stm::BankStatement)::PaidInvoice = begin
 	id = invoice.id
 	meta = invoice.meta
@@ -23,8 +75,32 @@ create(invoice::UnpaidInvoice, stm::BankStatement)::PaidInvoice = begin
 	return PaidInvoice(id, meta, header, body, stm)
 end
 
-# create journal entries from an unpaid invoice
-# the create_journal_entry function is exported by AppliGeneralLedger test module
+
+"""
+    function conv2entry(inv::UnpaidInvoice, from::Int, to::Int)
+
+convert unpaid invoice into an AppliGeneralLedger.JournalEntry including VAT.
+
+```jldoctest
+julia> include("./src/api/api.jl");
+
+julia using Dates
+
+julia> using AppliSales
+
+julia> using AppliGeneralLedger
+
+julia> orders = AppliSales.process()
+
+julia> invnbr = 1000
+
+julia> unpaid_invoice = create(orders[1], "A" * string(invnbr += 1))
+
+julia> n = 100
+
+julia> journal_entries = conv2entry(unpaid_invoice, 1300, 8000)
+```
+"""
 function conv2entry(inv::UnpaidInvoice, from::Int, to::Int)
     id = string(Date(now())) * "-" * string(global n += 1)
     customer_id = inv.header.name
@@ -36,8 +112,12 @@ function conv2entry(inv::UnpaidInvoice, from::Int, to::Int)
     return create_journal_entry(id, customer_id, invoice_nbr, from, to, debit, credit, vat, descr)
 end
 
-# create journal entries from a paid invoice
-# the create_journal_entry function is exported by AppliGeneralLedger
+
+"""
+    function conv2entry(inv::PaidInvoice, from::Int, to::Int)
+
+convert paid invoices into an AppliGeneralLedger.JournalEntry.
+"""
 function conv2entry(inv::PaidInvoice, from::Int, to::Int)
     id = string(Date(now())) * "-" * string(global n += 1)
     customer_id = inv.header.name
