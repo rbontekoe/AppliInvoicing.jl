@@ -124,10 +124,10 @@ end
     db = connect(path)
     orders = AppliSales.process()
     entries = process(path, orders)
-    #unpaid_invoices = retrieve_unpaid_invoices(path)
-    unpaid_invoices = SQLite.DBInterface.execute(db, "select * from UNPAID") |> DataFrame
-    @test length(unpaid_invoices.item) == 3
-    @test unpaid_invoices.item[1].id == "A1001"
+    unpaid_invoices = retrieve_unpaid_invoices(path)
+    #unpaid_invoices = SQLite.DBInterface.execute(db, "select * from UNPAID") |> DataFrame
+    @test length(unpaid_invoices) == 3
+    @test unpaid_invoices[1].id == "A1001"
 
     cmd = `rm test_invoicing.sqlite`
     run(cmd)
@@ -138,9 +138,9 @@ end
     db = connect(path)
     orders = AppliSales.process()
     process(path, orders)
-    #unpaid_invoices = retrieve_unpaid_invoices(path)
-    result = SQLite.DBInterface.execute(db, "select * from UNPAID") |> DataFrame
-    unpaid_invoices = result.item
+    unpaid_invoices = retrieve_unpaid_invoices(path)
+    #result = SQLite.DBInterface.execute(db, "select * from UNPAID") |> DataFrame
+    #unpaid_invoices = result.item
     stm1 = BankStatement(Date(2020-01-15), "Duck City Chronicals Invoice A1002", "NL93INGB", 2420.0)
     stms = [stm1]
     entries = process(path, unpaid_invoices, stms)
