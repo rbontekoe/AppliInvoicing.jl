@@ -35,10 +35,16 @@ store(db, table::String, items::Array{T, 1} where {T <: Any}) = begin
 end # store
 
 # retrieve all item from a table
-retrieve(db, table::String)::DataFrame = SQLite.Query( db, "select * from $table") |> DataFrame
+retrieve(db, table::String)::DataFrame = begin
+   r = SQLite.DBInterface.execute(db, "select * from $table") |> DataFrame
+   return r
+end
 
 # retrieve item form a table based on a sql condition
-retrieve(db, table::String, condition::String )::DataFrame = SQLite.Query( db, "select * from $table where $condition")  |> DataFrame
+retrieve(db, table::String, condition::String )::DataFrame = begin
+   r = SQLite.Query( db, "select * from $table where $condition")  |> DataFrame
+   return r
+end
 
 # run a custom function
 runfunct(funct, x, y, z) = funct(x, y, z)
