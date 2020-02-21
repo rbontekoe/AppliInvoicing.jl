@@ -164,4 +164,7 @@ end
     catch e
         @test(typeof(e) == SQLite.SQLiteException)
     end
+
+    cmd = `rm test_invoicing.sqlite`
+    run(cmd)
 end
