@@ -152,3 +152,16 @@ end
     cmd = `rm test_invoicing.sqlite`
     run(cmd)
 end
+
+@testset "disconnect(db)" begin
+    path = "./test_invoicing.sqlite"
+    db = connect(path)
+    orders = AppliSales.process()
+    process(path, orders)
+    disconnect(db)
+    try
+        retrieve(db, "UNPAID")
+    catch e
+        @test(typeof(e) == SQLite.SQLiteException)
+    end
+end

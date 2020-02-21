@@ -27,6 +27,9 @@ process(path, orders::Array{Order, 1}) = begin
     # archive invoices
     archive(db, string(UNPAID), invoices)
 
+    # close db
+    disconnect(db)
+
     # create journal entries from invoices
     return entries = [conv2entry(inv, 1300, 8000) for inv in invoices]
 end # process(path, orders::Array{Order, 1})
@@ -52,6 +55,9 @@ process(path, invoices::Array{UnpaidInvoice, 1}, stms::Array{BankStatement, 1}) 
     # archive PaidInvoice's
     archive(db, string(PAID), paid_invoices)
 
+    # close db
+    disconnect(db)
+
     # return array with JournalEntry's
     return entries = [conv2entry(inv, 1150, 1300) for inv in paid_invoices]
 end # process(path, invoices::Array{UnpaidInvoice, 1}, stms::Array{BankStatement, 1})
@@ -76,6 +82,9 @@ retrieve_unpaid_invoices(path)::Array{UnpaidInvoice, 1} = begin
     # row is an array with one element, which is an array.
     # row[1] is the the content of the element, the UnpaidInvoice.
     unpaid_invoices = [row[1] for row in eachrow(unpaid_records.item)]
+
+    # close db
+    disconnect(db)
 
     # return the array with UnpaidInvoice's that
     return unpaid_invoices
