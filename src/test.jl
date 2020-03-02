@@ -5,7 +5,7 @@ include("./infrastructure/infrastructure.jl")
 # see: https://github.com/JuliaDebug/Debugger.jl
 #using Debugger # use REPL for debugging
 
-# activateing logging
+# activating logging
 # see: https://discourse.julialang.org/t/how-to-save-logging-output-to-a-log-file/14004/5
 #using Logging
 #io = open("log_invoicing.txt", "w+")
