@@ -4,7 +4,8 @@ using CSV
 using DataFrames
 
 include("../api/api.jl")
-include("./db.jl") # database functions
+include("./db.jl")
+include("./doc.jl") # database functions
 
 @enum TableName begin
     UNPAID

@@ -2,11 +2,11 @@
 
 [[AppliGeneralLedger]]
 deps = ["DataFrames", "Dates", "Serialization"]
-git-tree-sha1 = "85192446637176abac86e336e42746f6e660ab82"
+git-tree-sha1 = "f8e0f129c31d85546997a7fbe6b41921b82c546e"
 repo-rev = "master"
 repo-url = "https://github.com/rbontekoe/AppliGeneralLedger.jl"
 uuid = "153ef306-36d1-11ea-1f0d-e3f38f84e10d"
-version = "0.2.7"
+version = "0.3.1"
 
 [[AppliSales]]
 deps = ["Dates"]
@@ -27,9 +27,9 @@ version = "0.5.8"
 
 [[CSV]]
 deps = ["CategoricalArrays", "DataFrames", "Dates", "FilePathsBase", "Mmap", "Parsers", "PooledArrays", "Tables", "Unicode", "WeakRefStrings"]
-git-tree-sha1 = "dd7861a31c6a2a9404186a80e5dec919a25b3abb"
+git-tree-sha1 = "c5ef3e34d21aa4b0e88521f1dc8031515d389148"
 uuid = "336ed68f-0bac-5ca0-87d4-7b16caf5d00b"
-version = "0.5.25"
+version = "0.5.26"
 
 [[CategoricalArrays]]
 deps = ["Compat", "DataAPI", "Future", "JSON", "Missings", "Printf", "Reexport", "Statistics", "Unicode"]
@@ -226,9 +226,9 @@ version = "1.0.0"
 
 [[Tables]]
 deps = ["DataAPI", "DataValueInterfaces", "IteratorInterfaceExtensions", "LinearAlgebra", "TableTraits", "Test"]
-git-tree-sha1 = "a54b8ce702aa863eced47bade03123d4dca0db84"
+git-tree-sha1 = "242b7fde70b8bc6a30d6476adf17ca3cf1ced6ee"
 uuid = "bd369af6-aec1-5ad0-b16a-f7cc5008161c"
-version = "1.0.2"
+version = "1.0.3"
 
 [[Test]]
 deps = ["Distributed", "InteractiveUtils", "Logging", "Random"]
