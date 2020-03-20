@@ -1,7 +1,7 @@
 # api.jl
 
 include("../domain/domain.jl")
-include("./doc.jl")
+include("./spec.jl")
 
 import AppliSales.Order # Order is not exported but is refered to in the next function
 

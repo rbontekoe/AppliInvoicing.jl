@@ -81,3 +81,16 @@ julia> run(cmd)
 ```
 """
 function retrieve_unpaid_invoices end
+
+"""
+    retrieve_paid_invoices(path::String)::Array{PaidInvoice, 1}
+
+Retrieves PaidInvoice's from a SQLite.jl database.
+
+# Example
+
+```
+TODO
+```
+"""
+function retrieve_paid_invoices end

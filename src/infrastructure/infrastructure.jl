@@ -90,3 +90,22 @@ retrieve_unpaid_invoices(path)::Array{UnpaidInvoice, 1} = begin
     # return the array with UnpaidInvoice's that
     return unpaid_invoices
 end # retrieve_unpaid_invoices
+
+retrieve_paid_invoices(path)::Array{PaidInvoice, 1} = begin
+    # connect to db
+    db = connect(path)
+
+    # retrieve unpaid invoices as dataframe
+    paid_records = retrieve(db, string(PAID))
+
+    # convert the dataframe to an array with UnpaidInvoice's.
+    # row is an array with one element, which is an array.
+    # row[1] is the the content of the element, the UnpaidInvoice.
+    paid_invoices = [row[1] for row in eachrow(paid_records.item)]
+
+    # close db
+    disconnect(db)
+
+    # return the array with UnpaidInvoice's that
+    return paid_invoices
+end # retrieve_unpaid_invoices
