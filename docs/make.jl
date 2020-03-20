@@ -7,9 +7,9 @@ makedocs(
     format = Documenter.HTML(),
     pages = [
         "Invoicing" => "index.md",
-        "1 - API" => "chapter1.md",
-        "2 - Infrastructure" => "chapter2.md",
-        "3 - Domain" => "chapter3.md",
+        "1 - Domain" => "chapter1.md",
+        "2 - API" => "chapter2.md",
+        "3 - Infrastructure" => "chapter3.md",
         "4 - Examples" => "chapter4.md"
     ]
 )

@@ -1,16 +1,11 @@
-# 2. Infrastructure functions
+# 1. API
 
-## process
+## create
 ```@docs
-process
+create
 ```
 
-## read\_bank\_statements
+## conv2entry
 ```@docs
-read_bank_statements
-```
-
-## retrieve\_unpaid\_invoices
-```@docs
-retrieve_unpaid_invoices
+conv2entry
 ```

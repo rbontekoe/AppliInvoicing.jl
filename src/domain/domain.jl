@@ -63,14 +63,14 @@ end # PaidInvoice
 """
     stm(i::PaidInvoice)
 
-Returns the Bankstatement of an paid invoice.
+Returns the Bankstatement of a paid invoice.
 """
 stm(i::PaidInvoice) = error("Stm is not defined as concrete type")
 
 """
     stm(i::PaidInvoice)
 
-Returns the Bankstatement of an paid invoice.
+Returns the Bankstatement of a paid invoice.
 """
 stm(i::PaidInvoice) = i.stm
 

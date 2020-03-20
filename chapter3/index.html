@@ -1,155 +1,42 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>3 - Examples · Invoicing</title><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../"><img src="../assets/logo.png" alt="Invoicing logo"/></a><div class="docs-package-name"><span class="docs-autofit">Invoicing</span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Invoicing</a></li><li><a class="tocitem" href="../chapter1/">1 - API</a></li><li><a class="tocitem" href="../chapter2/">2 - Infrastructure</a></li><li class="is-active"><a class="tocitem" href>3 - Examples</a><ul class="internal"><li><a class="tocitem" href="#Example-user-1"><span>Example -  user</span></a></li></ul></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>3 - Examples</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>3 - Examples</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/rbontekoe/AppliInvoicing.jl/blob/master/docs/src/chapter3.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id="Example-1"><a class="docs-heading-anchor" href="#Example-1">Example</a><a class="docs-heading-anchor-permalink" href="#Example-1" title="Permalink"></a></h1><h2 id="Example-user-1"><a class="docs-heading-anchor" href="#Example-user-1">Example -  user</a><a class="docs-heading-anchor-permalink" href="#Example-user-1" title="Permalink"></a></h2><pre><code class="language-julia">julia&gt; using AppliSales
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>3 - Infrastructure · Invoicing</title><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/fontawesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/solid.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/brands.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.11.1/katex.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL=".."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" data-main="../assets/documenter.js"></script><script src="../siteinfo.js"></script><script src="../../versions.js"></script><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-dark.css" data-theme-name="documenter-dark"/><link class="docs-theme-link" rel="stylesheet" type="text/css" href="../assets/themes/documenter-light.css" data-theme-name="documenter-light" data-theme-primary/><script src="../assets/themeswap.js"></script></head><body><div id="documenter"><nav class="docs-sidebar"><a class="docs-logo" href="../"><img src="../assets/logo.png" alt="Invoicing logo"/></a><div class="docs-package-name"><span class="docs-autofit">Invoicing</span></div><form class="docs-search" action="../search/"><input class="docs-search-query" id="documenter-search-query" name="q" type="text" placeholder="Search docs"/></form><ul class="docs-menu"><li><a class="tocitem" href="../">Invoicing</a></li><li><a class="tocitem" href="../chapter1/">1 - Domain</a></li><li><a class="tocitem" href="../chapter2/">2 - API</a></li><li class="is-active"><a class="tocitem" href>3 - Infrastructure</a><ul class="internal"><li><a class="tocitem" href="#process-1"><span>process</span></a></li><li><a class="tocitem" href="#read_bank_statements-1"><span>read_bank_statements</span></a></li><li><a class="tocitem" href="#retrieve_unpaid_invoices-1"><span>retrieve_unpaid_invoices</span></a></li><li><a class="tocitem" href="#retrieve_paid_invoices-1"><span>retrieve_paid_invoices</span></a></li></ul></li><li><a class="tocitem" href="../chapter4/">4 - Examples</a></li></ul><div class="docs-version-selector field has-addons"><div class="control"><span class="docs-label button is-static is-size-7">Version</span></div><div class="docs-selector control is-expanded"><div class="select is-fullwidth is-size-7"><select id="documenter-version-selector"></select></div></div></div></nav><div class="docs-main"><header class="docs-navbar"><nav class="breadcrumb"><ul class="is-hidden-mobile"><li class="is-active"><a href>3 - Infrastructure</a></li></ul><ul class="is-hidden-tablet"><li class="is-active"><a href>3 - Infrastructure</a></li></ul></nav><div class="docs-right"><a class="docs-edit-link" href="https://github.com/rbontekoe/AppliInvoicing.jl/blob/master/docs/src/chapter3.md" title="Edit on GitHub"><span class="docs-icon fab"></span><span class="docs-label is-hidden-touch">Edit on GitHub</span></a><a class="docs-settings-button fas fa-cog" id="documenter-settings-button" href="#" title="Settings"></a><a class="docs-sidebar-button fa fa-bars is-hidden-desktop" id="documenter-sidebar-button" href="#"></a></div></header><article class="content" id="documenter-page"><h1 id=".-Infrastructure-functions-1"><a class="docs-heading-anchor" href="#.-Infrastructure-functions-1">2. Infrastructure functions</a><a class="docs-heading-anchor-permalink" href="#.-Infrastructure-functions-1" title="Permalink"></a></h1><h2 id="process-1"><a class="docs-heading-anchor" href="#process-1">process</a><a class="docs-heading-anchor-permalink" href="#process-1" title="Permalink"></a></h2><article class="docstring"><header><a class="docstring-binding" id="process" href="#process"><code>process</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia">process(path::String, ::Array{AppliSales.Order, 1})
 
-julia&gt; using AppliInvoicing
+process(path::String, ::Array{UnpaidInvoice, 1}, ::Array{AppliGeneralLedger.BankStatement, 1})</code></pre><ul><li>Creates UnpaidInvoice&#39;s from AppliSale.Order&#39;s, archive them, and creates AppliGeneralLedger.Entry&#39;s for the general ledger.</li><li>Creates PaidInvoices&#39;s from UnpaidInvoices by using AppliGeneralLedger.BankStatement&#39;s, and creates AppliGeneralLedger.Entry&#39;s for the general ledger.</li></ul><p><strong>Example</strong></p><pre><code class="language-none">julia&gt; using AppliSales
 
 julia&gt; using AppliGeneralLedger
 
-julia&gt; using DataFrames
-
-julia&gt; using CSV
-
-julia&gt; using SQLite
+julia&gt; using AppliInvoicing
 
 julia&gt; const PATH_DB = &quot;./test_invoicing.sqlite&quot;
-&quot;./test_invoicing.sqlite&quot;
 
 julia&gt; const PATH_CSV = &quot;./bank.csv&quot;
-&quot;./bank.csv&quot;
 
-julia&gt; # get orders
-       orders = AppliSales.process()
-3-element Array{AppliSales.Order,1}:
- AppliSales.Order(&quot;2438091263718968922&quot;, AppliSales.Organization(&quot;3427371109961104901&quot;, &quot;Scrooge Investment Bank&quot;, &quot;1180 Seven Seas Dr&quot;, &quot;FL 32830&quot;, &quot;Lake Buena Vista&quot;, &quot;USA&quot;), AppliSales.Training(&quot;LS&quot;, 2019-08-30T00:00:00, 2, &quot;Learn Smiling&quot;, 1000.0), &quot;PO-456&quot;, &quot;Scrooge McDuck&quot;, &quot;scrooge@duckcity.com&quot;, [&quot;Scrooge McDuck&quot;])
- AppliSales.Order(&quot;1138078377637347262&quot;, AppliSales.Organization(&quot;3868942126239046229&quot;, &quot;Duck City Chronicals&quot;, &quot;1185 Seven Seas Dr&quot;, &quot;FL 32830&quot;, &quot;Lake Buena Vista&quot;, &quot;USA&quot;), AppliSales.Training(&quot;LS&quot;, 2019-08-30T00:00:00, 2, &quot;Learn Smiling&quot;, 1000.0), &quot;DD-001&quot;, &quot;Mickey Mouse&quot;, &quot;mickey@duckcity.com&quot;, [&quot;Mini Mouse&quot;, &quot;Goofy&quot;])
- AppliSales.Order(&quot;12370498358369136371&quot;, AppliSales.Organization(&quot;2768094194732922249&quot;, &quot;Donalds Hardware Store&quot;, &quot;1190 Seven Seas Dr&quot;, &quot;FL 32830&quot;, &quot;Lake Buena Vista&quot;, &quot;USA&quot;), AppliSales.Training(&quot;LS&quot;, 2019-08-30T00:00:00, 2, &quot;Learn Smiling&quot;, 1000.0), &quot;&quot;, &quot;Donald Duck&quot;, &quot;donald@duckcity.com&quot;, [&quot;Daisy Duck&quot;])              
+julia&gt; orders = AppliSales.process()
 
 julia&gt; journal_entries_1 = AppliInvoicing.process(PATH_DB, orders)
-3-element Array{AppliGeneralLedger.JournalEntry,1}:
- AppliGeneralLedger.JournalEntry(&quot;2020-03-04-1&quot;, 3, 2020-03-04T11:15:04.628, &quot;Scrooge Investment Bank&quot;, &quot;A1001&quot;, 1300, 8000, 1000.0, 0.0, 210.0, &quot;Learn Smiling&quot;)
- AppliGeneralLedger.JournalEntry(&quot;2020-03-04-2&quot;, 3, 2020-03-04T11:15:04.628, &quot;Duck City Chronicals&quot;, &quot;A1002&quot;, 1300, 8000, 2000.0, 0.0, 420.0, &quot;Learn Smiling&quot;)   
- AppliGeneralLedger.JournalEntry(&quot;2020-03-04-3&quot;, 3, 2020-03-04T11:15:04.628, &quot;Donalds Hardware Store&quot;, &quot;A1003&quot;, 1300, 8000, 1000.0, 0.0, 210.0, &quot;Learn Smiling&quot;)
 
-julia&gt; # get Bank statemnets and unpaid invoices
-       stms = AppliInvoicing.read_bank_statements(PATH_CSV)
-2-element Array{AppliInvoicing.BankStatement,1}:
- AppliInvoicing.BankStatement(2020-01-15, &quot;Duck City Chronicals Invoice A1002&quot;, &quot;NL93INGB&quot;, 2420.0)
- AppliInvoicing.BankStatement(2020-01-15, &quot;Donalds Hardware Store Bill A1003&quot;, &quot;NL39INGB&quot;, 1210.0)
+julia&gt; stms = AppliInvoicing.read_bank_statements(PATH_CSV)
 
 julia&gt; unpaid_invoices = retrieve_unpaid_invoices(PATH_DB)
-3-element Array{AppliInvoicing.UnpaidInvoice,1}:
- AppliInvoicing.UnpaidInvoice(&quot;A1001&quot;, AppliInvoicing.MetaInvoice(&quot;2438091263718968922&quot;, &quot;LS&quot;, 2020-03-04T11:15:02.978, &quot;€&quot;, 1.0), AppliInvoicing.Header(&quot;A1001&quot;, &quot;Scrooge Investment Bank&quot;, &quot;1180 Seven Seas Dr&quot;, &quot;FL 32830&quot;, &quot;Lake Buena Vista&quot;, &quot;USA&quot;, &quot;PO-456&quot;, &quot;Scrooge McDuck&quot;, &quot;scrooge@duckcity.com&quot;), AppliInvoicing.OpentrainingItem(&quot;Learn Smiling&quot;, 2019-08-30T00:00:00, 1000.0, [&quot;Scrooge McDuck&quot;], 0.21))
- AppliInvoicing.UnpaidInvoice(&quot;A1002&quot;, AppliInvoicing.MetaInvoice(&quot;1138078377637347262&quot;, &quot;LS&quot;, 2020-03-04T11:15:02.978, &quot;€&quot;, 1.0), AppliInvoicing.Header(&quot;A1002&quot;, &quot;Duck City Chronicals&quot;, &quot;1185 Seven Seas Dr&quot;, &quot;FL 32830&quot;, &quot;Lake Buena Vista&quot;, &quot;USA&quot;, &quot;DD-001&quot;, &quot;Mickey Mouse&quot;, &quot;mickey@duckcity.com&quot;), AppliInvoicing.OpentrainingItem(&quot;Learn Smiling&quot;, 2019-08-30T00:00:00, 1000.0, [&quot;Mini Mouse&quot;, &quot;Goofy&quot;], 0.21))
- AppliInvoicing.UnpaidInvoice(&quot;A1003&quot;, AppliInvoicing.MetaInvoice(&quot;12370498358369136371&quot;, &quot;LS&quot;, 2020-03-04T11:15:02.978, &quot;€&quot;, 1.0), AppliInvoicing.Header(&quot;A1003&quot;, &quot;Donalds Hardware Store&quot;, &quot;1190 Seven Seas Dr&quot;, &quot;FL 32830&quot;, &quot;Lake Buena Vista&quot;, &quot;USA&quot;, &quot;&quot;, &quot;Donald Duck&quot;, &quot;donald@duckcity.com&quot;), AppliInvoicing.OpentrainingItem(&quot;Learn Smiling&quot;, 2019-08-30T00:00:00, 1000.0, [&quot;Daisy Duck&quot;], 0.21))              
 
-julia&gt; # process unpaid invoices and bank staements
-       journal_entries_2 = AppliInvoicing.process(PATH_DB, unpaid_invoices, stms)
-2-element Array{AppliGeneralLedger.JournalEntry,1}:
- AppliGeneralLedger.JournalEntry(&quot;2020-03-04-4&quot;, 3, 2020-03-04T11:15:12.968, &quot;Duck City Chronicals&quot;, &quot;A1002&quot;, 1150, 1300, 2420.0, 0.0, 0.0, &quot;Learn Smiling&quot;)  
- AppliGeneralLedger.JournalEntry(&quot;2020-03-04-5&quot;, 3, 2020-03-04T11:15:12.968, &quot;Donalds Hardware Store&quot;, &quot;A1003&quot;, 1150, 1300, 1210.0, 0.0, 0.0, &quot;Learn Smiling&quot;)
+julia&gt; journal_entries_2 = AppliInvoicing.process(PATH_DB, unpaid_invoices, stms)
 
-julia&gt; # =============================
+julia&gt; cmd = `rm test_invoicing.sqlite`
 
-       # process journal entries
-       const PATH_DB_LEDGER = &quot;./test_ledger.txt&quot;
-&quot;./test_ledger.txt&quot;
+julia&gt; run(cmd)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/rbontekoe/AppliInvoicing.jl/blob/adbd7145997df06e7bc9f271528a842ad41f9660/src/infrastructure/doc.jl#L3-L38">source</a></section></article><h2 id="read_bank_statements-1"><a class="docs-heading-anchor" href="#read_bank_statements-1">read_bank_statements</a><a class="docs-heading-anchor-permalink" href="#read_bank_statements-1" title="Permalink"></a></h2><article class="docstring"><header><a class="docstring-binding" id="read_bank_statements" href="#read_bank_statements"><code>read_bank_statements</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia">read_bank_statements(path::String)</code></pre><p>Retrieves bank statements from a CSV-file.</p><p><strong>Example</strong></p><pre><code class="language-none">julia&gt; const PATH_CSV = &quot;./bank.csv&quot;
 
-julia&gt; const PATH_DB_JOURNAL = &quot;./test_journal.txt&quot;
-&quot;./test_journal.txt&quot;
+julia&gt; stms = AppliInvoicing.read_bank_statements(PATH_CSV)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/rbontekoe/AppliInvoicing.jl/blob/adbd7145997df06e7bc9f271528a842ad41f9660/src/infrastructure/doc.jl#L42-L54">source</a></section></article><h2 id="retrieve_unpaid_invoices-1"><a class="docs-heading-anchor" href="#retrieve_unpaid_invoices-1">retrieve_unpaid_invoices</a><a class="docs-heading-anchor-permalink" href="#retrieve_unpaid_invoices-1" title="Permalink"></a></h2><article class="docstring"><header><a class="docstring-binding" id="retrieve_unpaid_invoices" href="#retrieve_unpaid_invoices"><code>retrieve_unpaid_invoices</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia">retrieve_unpaid_invoices(path::String)::Array{UnpaidInvoice, 1}</code></pre><p>Retrieves UnpaidInvoice&#39;s from a SQLite.jl database.</p><p><strong>Example</strong></p><pre><code class="language-none">julia&gt; using AppliSales
 
-julia&gt; AppliGeneralLedger.process(PATH_DB_JOURNAL, PATH_DB_LEDGER, journal_entries_1)
+julia&gt; using AppliInvoicing
 
-julia&gt; # process journal entries
+julia&gt; const PATH_DB = &quot;./test_invoicing.sqlite&quot;
 
-       AppliGeneralLedger.process(PATH_DB_JOURNAL, PATH_DB_LEDGER, journal_entries_2)
+julia&gt; orders = AppliSales.process()
 
-julia&gt; # read all general ledger accounts
-       r = AppliGeneralLedger.read_from_file(PATH_DB_LEDGER)
-13-element Array{Any,1}:
- AppliGeneralLedger.Record(&quot;2020-03-04-1&quot;, 1300, 2020-03-04T11:15:04.628, &quot;Scrooge Investment Bank&quot;, &quot;A1001&quot;, 1210.0, 0.0, &quot;Learn Smiling&quot;)
- AppliGeneralLedger.Record(&quot;2020-03-04-1&quot;, 8000, 2020-03-04T11:15:04.628, &quot;Scrooge Investment Bank&quot;, &quot;A1001&quot;, 0.0, 1000.0, &quot;Learn Smiling&quot;)
- AppliGeneralLedger.Record(&quot;2020-03-04-1&quot;, 4000, 2020-03-04T11:15:04.628, &quot;Scrooge Investment Bank&quot;, &quot;A1001&quot;, 0.0, 210.0, &quot;Learn Smiling&quot;)
- AppliGeneralLedger.Record(&quot;2020-03-04-2&quot;, 1300, 2020-03-04T11:15:04.628, &quot;Duck City Chronicals&quot;, &quot;A1002&quot;, 2420.0, 0.0, &quot;Learn Smiling&quot;)   
- AppliGeneralLedger.Record(&quot;2020-03-04-2&quot;, 8000, 2020-03-04T11:15:04.628, &quot;Duck City Chronicals&quot;, &quot;A1002&quot;, 0.0, 2000.0, &quot;Learn Smiling&quot;)   
- ⋮                                                                                                                                         
- AppliGeneralLedger.Record(&quot;2020-03-04-4&quot;, 1150, 2020-03-04T11:15:12.968, &quot;Duck City Chronicals&quot;, &quot;A1002&quot;, 2420.0, 0.0, &quot;Learn Smiling&quot;)   
- AppliGeneralLedger.Record(&quot;2020-03-04-4&quot;, 1300, 2020-03-04T11:15:12.968, &quot;Duck City Chronicals&quot;, &quot;A1002&quot;, 0.0, 2420.0, &quot;Learn Smiling&quot;)   
- AppliGeneralLedger.Record(&quot;2020-03-04-5&quot;, 1150, 2020-03-04T11:15:12.968, &quot;Donalds Hardware Store&quot;, &quot;A1003&quot;, 1210.0, 0.0, &quot;Learn Smiling&quot;)
- AppliGeneralLedger.Record(&quot;2020-03-04-5&quot;, 1300, 2020-03-04T11:15:12.968, &quot;Donalds Hardware Store&quot;, &quot;A1003&quot;, 0.0, 1210.0, &quot;Learn Smiling&quot;)
+julia&gt; AppliInvoicing.process(PATH_DB, orders)
 
-julia&gt; df = DataFrame(r)
-13×8 DataFrame. Omitted printing of 1 columns
-│ Row │ id           │ accountid │ date                    │ customerid              │ invoice_nbr │ debit   │ credit  │
-│     │ String       │ Int64     │ Dates.DateTime          │ String                  │ String      │ Float64 │ Float64 │
-├─────┼──────────────┼───────────┼─────────────────────────┼─────────────────────────┼─────────────┼─────────┼─────────┤
-│ 1   │ 2020-03-04-1 │ 1300      │ 2020-03-04T11:15:04.628 │ Scrooge Investment Bank │ A1001       │ 1210.0  │ 0.0     │
-│ 2   │ 2020-03-04-1 │ 8000      │ 2020-03-04T11:15:04.628 │ Scrooge Investment Bank │ A1001       │ 0.0     │ 1000.0  │
-⋮
-│ 11  │ 2020-03-04-4 │ 1300      │ 2020-03-04T11:15:12.968 │ Duck City Chronicals    │ A1002       │ 0.0     │ 2420.0  │
-│ 12  │ 2020-03-04-5 │ 1150      │ 2020-03-04T11:15:12.968 │ Donalds Hardware Store  │ A1003       │ 1210.0  │ 0.0     │
-│ 13  │ 2020-03-04-5 │ 1300      │ 2020-03-04T11:15:12.968 │ Donalds Hardware Store  │ A1003       │ 0.0     │ 1210.0  │
+julia&gt; unpaid_invoices = retrieve_unpaid_invoices(PATH_DB)
 
-julia&gt; println(df)
-13×8 DataFrame
-│ Row │ id           │ accountid │ date                    │ customerid              │ invoice_nbr │ debit   │ credit  │ descr         │
-│     │ String       │ Int64     │ Dates.DateTime          │ String                  │ String      │ Float64 │ Float64 │ String        │
-├─────┼──────────────┼───────────┼─────────────────────────┼─────────────────────────┼─────────────┼─────────┼─────────┼───────────────┤
-│ 1   │ 2020-03-04-1 │ 1300      │ 2020-03-04T11:15:04.628 │ Scrooge Investment Bank │ A1001       │ 1210.0  │ 0.0     │ Learn Smiling │
-│ 2   │ 2020-03-04-1 │ 8000      │ 2020-03-04T11:15:04.628 │ Scrooge Investment Bank │ A1001       │ 0.0     │ 1000.0  │ Learn Smiling │
-│ 3   │ 2020-03-04-1 │ 4000      │ 2020-03-04T11:15:04.628 │ Scrooge Investment Bank │ A1001       │ 0.0     │ 210.0   │ Learn Smiling │
-│ 4   │ 2020-03-04-2 │ 1300      │ 2020-03-04T11:15:04.628 │ Duck City Chronicals    │ A1002       │ 2420.0  │ 0.0     │ Learn Smiling │
-│ 5   │ 2020-03-04-2 │ 8000      │ 2020-03-04T11:15:04.628 │ Duck City Chronicals    │ A1002       │ 0.0     │ 2000.0  │ Learn Smiling │
-│ 6   │ 2020-03-04-2 │ 4000      │ 2020-03-04T11:15:04.628 │ Duck City Chronicals    │ A1002       │ 0.0     │ 420.0   │ Learn Smiling │
-│ 7   │ 2020-03-04-3 │ 1300      │ 2020-03-04T11:15:04.628 │ Donalds Hardware Store  │ A1003       │ 1210.0  │ 0.0     │ Learn Smiling │
-│ 8   │ 2020-03-04-3 │ 8000      │ 2020-03-04T11:15:04.628 │ Donalds Hardware Store  │ A1003       │ 0.0     │ 1000.0  │ Learn Smiling │
-│ 9   │ 2020-03-04-3 │ 4000      │ 2020-03-04T11:15:04.628 │ Donalds Hardware Store  │ A1003       │ 0.0     │ 210.0   │ Learn Smiling │
-│ 10  │ 2020-03-04-4 │ 1150      │ 2020-03-04T11:15:12.968 │ Duck City Chronicals    │ A1002       │ 2420.0  │ 0.0     │ Learn Smiling │
-│ 11  │ 2020-03-04-4 │ 1300      │ 2020-03-04T11:15:12.968 │ Duck City Chronicals    │ A1002       │ 0.0     │ 2420.0  │ Learn Smiling │
-│ 12  │ 2020-03-04-5 │ 1150      │ 2020-03-04T11:15:12.968 │ Donalds Hardware Store  │ A1003       │ 1210.0  │ 0.0     │ Learn Smiling │
-│ 13  │ 2020-03-04-5 │ 1300      │ 2020-03-04T11:15:12.968 │ Donalds Hardware Store  │ A1003       │ 0.0     │ 1210.0  │ Learn Smiling │
+julia&gt; cmd = `rm test_invoicing.sqlite`
 
-julia&gt; df2 = df[df.accountid .== 1300, :]
-5×8 DataFrame. Omitted printing of 1 columns
-│ Row │ id           │ accountid │ date                    │ customerid              │ invoice_nbr │ debit   │ credit  │
-│     │ String       │ Int64     │ Dates.DateTime          │ String                  │ String      │ Float64 │ Float64 │
-├─────┼──────────────┼───────────┼─────────────────────────┼─────────────────────────┼─────────────┼─────────┼─────────┤
-│ 1   │ 2020-03-04-1 │ 1300      │ 2020-03-04T11:15:04.628 │ Scrooge Investment Bank │ A1001       │ 1210.0  │ 0.0     │
-│ 2   │ 2020-03-04-2 │ 1300      │ 2020-03-04T11:15:04.628 │ Duck City Chronicals    │ A1002       │ 2420.0  │ 0.0     │
-│ 3   │ 2020-03-04-3 │ 1300      │ 2020-03-04T11:15:04.628 │ Donalds Hardware Store  │ A1003       │ 1210.0  │ 0.0     │
-│ 4   │ 2020-03-04-4 │ 1300      │ 2020-03-04T11:15:12.968 │ Duck City Chronicals    │ A1002       │ 0.0     │ 2420.0  │
-│ 5   │ 2020-03-04-5 │ 1300      │ 2020-03-04T11:15:12.968 │ Donalds Hardware Store  │ A1003       │ 0.0     │ 1210.0  │
-
-julia&gt; account_receivable = sum(df2.debit - df2.credit)
-1210.0
-
-julia&gt; @info(&quot;Balance of accounts receivable is $(account_receivable). Should be 1210&quot;)
-[ Info: Balance of accounts receivable is 1210.0. Should be 1210
-
-julia&gt; println(&quot;Status accounts receivable: € $account_receivable&quot;) # should be € 1210.0
-Status accounts receivable: € 1210.0
-
-julia&gt; # get status of sales
-       df2 = df[df.accountid .== 8000, :]
-3×8 DataFrame. Omitted printing of 1 columns
-│ Row │ id           │ accountid │ date                    │ customerid              │ invoice_nbr │ debit   │ credit  │
-│     │ String       │ Int64     │ Dates.DateTime          │ String                  │ String      │ Float64 │ Float64 │
-├─────┼──────────────┼───────────┼─────────────────────────┼─────────────────────────┼─────────────┼─────────┼─────────┤
-│ 1   │ 2020-03-04-1 │ 8000      │ 2020-03-04T11:15:04.628 │ Scrooge Investment Bank │ A1001       │ 0.0     │ 1000.0  │
-│ 2   │ 2020-03-04-2 │ 8000      │ 2020-03-04T11:15:04.628 │ Duck City Chronicals    │ A1002       │ 0.0     │ 2000.0  │
-│ 3   │ 2020-03-04-3 │ 8000      │ 2020-03-04T11:15:04.628 │ Donalds Hardware Store  │ A1003       │ 0.0     │ 1000.0  │
-
-julia&gt; sales = sum(df2.credit - df2.debit) # should return € 4000.0
-4000.0
-
-julia&gt; @info(&quot;Sales is $(sales). Should be 4000.&quot;)
-[ Info: Sales is 4000.0. Should be 4000.
-
-julia&gt; println(&quot;Sales: € $sales&quot;)
-Sales: € 4000.0
-
-julia&gt; # cleanup
-       stm = `rm test_invoicing.sqlite test_ledger.txt test_journal.txt`
-`rm test_invoicing.sqlite test_ledger.txt test_journal.txt`
-
-julia&gt; run(stm)
-Process(`rm test_invoicing.sqlite test_ledger.txt test_journal.txt`, ProcessExited(0))</code></pre></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../chapter2/">« 2 - Infrastructure</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Wednesday 4 March 2020 13:43">Wednesday 4 March 2020</span>. Using Julia version 1.3.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
+julia&gt; run(cmd)</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/rbontekoe/AppliInvoicing.jl/blob/adbd7145997df06e7bc9f271528a842ad41f9660/src/infrastructure/doc.jl#L58-L82">source</a></section></article><h2 id="retrieve_paid_invoices-1"><a class="docs-heading-anchor" href="#retrieve_paid_invoices-1">retrieve_paid_invoices</a><a class="docs-heading-anchor-permalink" href="#retrieve_paid_invoices-1" title="Permalink"></a></h2><article class="docstring"><header><a class="docstring-binding" id="retrieve_paid_invoices" href="#retrieve_paid_invoices"><code>retrieve_paid_invoices</code></a> — <span class="docstring-category">Function</span></header><section><div><pre><code class="language-julia">retrieve_paid_invoices(path::String)::Array{PaidInvoice, 1}</code></pre><p>Retrieves PaidInvoice&#39;s from a SQLite.jl database.</p><p><strong>Example</strong></p><pre><code class="language-none">TODO</code></pre></div><a class="docs-sourcelink" target="_blank" href="https://github.com/rbontekoe/AppliInvoicing.jl/blob/adbd7145997df06e7bc9f271528a842ad41f9660/src/infrastructure/doc.jl#L85-L95">source</a></section></article></article><nav class="docs-footer"><a class="docs-footer-prevpage" href="../chapter2/">« 2 - API</a><a class="docs-footer-nextpage" href="../chapter4/">4 - Examples »</a></nav></div><div class="modal" id="documenter-settings"><div class="modal-background"></div><div class="modal-card"><header class="modal-card-head"><p class="modal-card-title">Settings</p><button class="delete"></button></header><section class="modal-card-body"><p><label class="label">Theme</label><div class="select"><select id="documenter-themepicker"><option value="documenter-light">documenter-light</option><option value="documenter-dark">documenter-dark</option></select></div></p><hr/><p>This document was generated with <a href="https://github.com/JuliaDocs/Documenter.jl">Documenter.jl</a> on <span class="colophon-date" title="Friday 20 March 2020 16:01">Friday 20 March 2020</span>. Using Julia version 1.3.1.</p></section><footer class="modal-card-foot"></footer></div></div></div></body></html>
