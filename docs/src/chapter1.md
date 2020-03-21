@@ -4,6 +4,8 @@
 
 The function subtypetree is from the book [Design Patterns and best Practices with Julia](https://www.amazon.com/Hands-Design-Patterns-Julia-comprehensive/dp/183864881X)
 
+Branches are abstract datatypes, the leaves are concrete datatypes.
+
 ```
 julia> subtypes(Invoice)
 2-element Array{Any,1}:
@@ -28,6 +30,18 @@ julia> fieldnames(PaidInvoice)
 
 julia> fieldnames(UnpaidInvoice)
 (:id, :meta, :header, :body)
+
+julia> fieldnames(BankStatement)
+(:date, :descr, :iban, :amount)
+
+julia> fieldnames(OpentrainingItem)
+(:name_training, :date, :price_per_student, :students, :vat_perc)
+
+julia> fieldnames(Header)
+(:invoice_nbr, :name, :address, :zip, :city, :country, :order_ref, :name_contact, :email_contact)
+
+julia> fieldnames(MetaInvoice)
+(:order_id, :training_id, :date, :currency, :currency_ratio)
 ```
 
 ## Field name functions for Invoice
