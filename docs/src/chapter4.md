@@ -28,7 +28,8 @@ julia> # get orders
  AppliSales.Order("1138078377637347262", AppliSales.Organization("3868942126239046229", "Duck City Chronicals", "1185 Seven Seas Dr", "FL 32830", "Lake Buena Vista", "USA"), AppliSales.Training("LS", 2019-08-30T00:00:00, 2, "Learn Smiling", 1000.0), "DD-001", "Mickey Mouse", "mickey@duckcity.com", ["Mini Mouse", "Goofy"])
  AppliSales.Order("12370498358369136371", AppliSales.Organization("2768094194732922249", "Donalds Hardware Store", "1190 Seven Seas Dr", "FL 32830", "Lake Buena Vista", "USA"), AppliSales.Training("LS", 2019-08-30T00:00:00, 2, "Learn Smiling", 1000.0), "", "Donald Duck", "donald@duckcity.com", ["Daisy Duck"])              
 
-julia> journal_entries_1 = AppliInvoicing.process(PATH_DB, orders)
+julia> # create journal statments for general ledger
+       journal_entries_1 = AppliInvoicing.process(PATH_DB, orders)
 3-element Array{AppliGeneralLedger.JournalEntry,1}:
  AppliGeneralLedger.JournalEntry("2020-03-04-1", 3, 2020-03-04T11:15:04.628, "Scrooge Investment Bank", "A1001", 1300, 8000, 1000.0, 0.0, 210.0, "Learn Smiling")
  AppliGeneralLedger.JournalEntry("2020-03-04-2", 3, 2020-03-04T11:15:04.628, "Duck City Chronicals", "A1002", 1300, 8000, 2000.0, 0.0, 420.0, "Learn Smiling")   
@@ -40,13 +41,14 @@ julia> # get Bank statemnets and unpaid invoices
  AppliInvoicing.BankStatement(2020-01-15, "Duck City Chronicals Invoice A1002", "NL93INGB", 2420.0)
  AppliInvoicing.BankStatement(2020-01-15, "Donalds Hardware Store Bill A1003", "NL39INGB", 1210.0)
 
-julia> unpaid_invoices = retrieve_unpaid_invoices(PATH_DB)
+julia> # retrieve unpaid invoices
+       unpaid_invoices = retrieve_unpaid_invoices(PATH_DB)
 3-element Array{AppliInvoicing.UnpaidInvoice,1}:
  AppliInvoicing.UnpaidInvoice("A1001", AppliInvoicing.MetaInvoice("2438091263718968922", "LS", 2020-03-04T11:15:02.978, "€", 1.0), AppliInvoicing.Header("A1001", "Scrooge Investment Bank", "1180 Seven Seas Dr", "FL 32830", "Lake Buena Vista", "USA", "PO-456", "Scrooge McDuck", "scrooge@duckcity.com"), AppliInvoicing.OpentrainingItem("Learn Smiling", 2019-08-30T00:00:00, 1000.0, ["Scrooge McDuck"], 0.21))
  AppliInvoicing.UnpaidInvoice("A1002", AppliInvoicing.MetaInvoice("1138078377637347262", "LS", 2020-03-04T11:15:02.978, "€", 1.0), AppliInvoicing.Header("A1002", "Duck City Chronicals", "1185 Seven Seas Dr", "FL 32830", "Lake Buena Vista", "USA", "DD-001", "Mickey Mouse", "mickey@duckcity.com"), AppliInvoicing.OpentrainingItem("Learn Smiling", 2019-08-30T00:00:00, 1000.0, ["Mini Mouse", "Goofy"], 0.21))
  AppliInvoicing.UnpaidInvoice("A1003", AppliInvoicing.MetaInvoice("12370498358369136371", "LS", 2020-03-04T11:15:02.978, "€", 1.0), AppliInvoicing.Header("A1003", "Donalds Hardware Store", "1190 Seven Seas Dr", "FL 32830", "Lake Buena Vista", "USA", "", "Donald Duck", "donald@duckcity.com"), AppliInvoicing.OpentrainingItem("Learn Smiling", 2019-08-30T00:00:00, 1000.0, ["Daisy Duck"], 0.21))              
 
-julia> # process unpaid invoices and bank staements
+julia> # process unpaid invoices and bank statements
        journal_entries_2 = AppliInvoicing.process(PATH_DB, unpaid_invoices, stms)
 2-element Array{AppliGeneralLedger.JournalEntry,1}:
  AppliGeneralLedger.JournalEntry("2020-03-04-4", 3, 2020-03-04T11:15:12.968, "Duck City Chronicals", "A1002", 1150, 1300, 2420.0, 0.0, 0.0, "Learn Smiling")  
@@ -61,10 +63,10 @@ julia> # =============================
 julia> const PATH_DB_JOURNAL = "./test_journal.txt"
 "./test_journal.txt"
 
-julia> AppliGeneralLedger.process(PATH_DB_JOURNAL, PATH_DB_LEDGER, journal_entries_1)
+julia> # process the journal statements for the uppaid invoices
+       AppliGeneralLedger.process(PATH_DB_JOURNAL, PATH_DB_LEDGER, journal_entries_1)
 
-julia> # process journal entries
-
+julia> # process journal journal statements for the paid invoices
        AppliGeneralLedger.process(PATH_DB_JOURNAL, PATH_DB_LEDGER, journal_entries_2)
 
 julia> # read all general ledger accounts
@@ -112,7 +114,8 @@ julia> println(df)
 │ 12  │ 2020-03-04-5 │ 1150      │ 2020-03-04T11:15:12.968 │ Donalds Hardware Store  │ A1003       │ 1210.0  │ 0.0     │ Learn Smiling │
 │ 13  │ 2020-03-04-5 │ 1300      │ 2020-03-04T11:15:12.968 │ Donalds Hardware Store  │ A1003       │ 0.0     │ 1210.0  │ Learn Smiling │
 
-julia> df2 = df[df.accountid .== 1300, :]
+julia> # select only the journal statements for account 1300 (accounts receivable)
+       df2 = df[df.accountid .== 1300, :]
 5×8 DataFrame. Omitted printing of 1 columns
 │ Row │ id           │ accountid │ date                    │ customerid              │ invoice_nbr │ debit   │ credit  │
 │     │ String       │ Int64     │ Dates.DateTime          │ String                  │ String      │ Float64 │ Float64 │
@@ -123,7 +126,8 @@ julia> df2 = df[df.accountid .== 1300, :]
 │ 4   │ 2020-03-04-4 │ 1300      │ 2020-03-04T11:15:12.968 │ Duck City Chronicals    │ A1002       │ 0.0     │ 2420.0  │
 │ 5   │ 2020-03-04-5 │ 1300      │ 2020-03-04T11:15:12.968 │ Donalds Hardware Store  │ A1003       │ 0.0     │ 1210.0  │
 
-julia> account_receivable = sum(df2.debit - df2.credit)
+julia> # calculate the balance for accounts receivable
+       account_receivable = sum(df2.debit - df2.credit)
 1210.0
 
 julia> @info("Balance of accounts receivable is $(account_receivable). Should be 1210")
@@ -132,7 +136,7 @@ julia> @info("Balance of accounts receivable is $(account_receivable). Should be
 julia> println("Status accounts receivable: € $account_receivable") # should be € 1210.0
 Status accounts receivable: € 1210.0
 
-julia> # get status of sales
+julia> # select the statements for account 8000 (sales)
        df2 = df[df.accountid .== 8000, :]
 3×8 DataFrame. Omitted printing of 1 columns
 │ Row │ id           │ accountid │ date                    │ customerid              │ invoice_nbr │ debit   │ credit  │

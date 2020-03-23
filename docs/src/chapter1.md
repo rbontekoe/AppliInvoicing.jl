@@ -2,9 +2,9 @@
 
 ## Domain structure
 
-The function subtypetree is from the book [Design Patterns and best Practices with Julia](https://www.amazon.com/Hands-Design-Patterns-Julia-comprehensive/dp/183864881X)
+The function `subtypetree` is from the book [Design Patterns and Best Practices with Julia](https://www.amazon.com/Hands-Design-Patterns-Julia-comprehensive/dp/183864881X)
 
-Branches are abstract datatypes, the leaves are concrete datatypes.
+Branches are abstract data types, and the leaves are concrete data types.
 
 ```
 julia> subtypes(Invoice)
@@ -44,7 +44,7 @@ julia> fieldnames(MetaInvoice)
 (:order_id, :training_id, :date, :currency, :currency_ratio)
 ```
 
-## Field name functions for Invoice
+## Getter functions for Invoice
 
 ## id
 ```@docs
@@ -79,13 +79,13 @@ julia> const PATH_DB_TEST = "./test_invoicing.sqlite";
 
 julia> const PATH_CSV = "./bank.csv";
 
-julia> orders = AppliSales.process(); # get the order
+julia> orders = AppliSales.process(); # get the orders
 
 julia> invnbr = 1000; # set starting invoice number
 
 julia> invoices = [create(order, "A" * string(global invnbr += 1)) for order in orders]; # create the invoices
 
-julia> journal_entries_1 = process(PATH_DB_TEST, orders); # #process the orders
+julia> journal_entries_1 = process(PATH_DB_TEST, orders); # # process the orders
 
 julia> stms = read_bank_statements(PATH_CSV); # retrieve the bank statemnets
 
@@ -109,7 +109,7 @@ julia> journal_entries_2 = process(PATH_DB_TEST, unpaid_invoices, stms); # proce
 
 julia> paid_invoices = retrieve_paid_invoices(PATH_DB_TEST); # retrieve the paid invoices
 
-julia> id(paid_invoices[1]) # one of the paid invoices, see the step above retrieve the unpaid invoices
+julia> id(paid_invoices[1]) # one of the paid invoices (see the step earlier retrieving the unpaid invoices)
 "A1002"
 
 julia> header(paid_invoices[1])
@@ -121,7 +121,7 @@ OpentrainingItem("Learn Smiling", 2019-08-30T00:00:00, 1000.0, ["Mini Mouse", "G
 julia> stm(paid_invoices[1])
 BankStatement(2020-01-15, "Duck City Chronicals Invoice A1002", "NL93INGB", 2420.0)
 
-julia> cmd = `rm $(PATH_DB_TEST)`; # linux command to remove the database
+julia> cmd = `rm $(PATH_DB_TEST)`; # the Linux command to remove the database
 
 julia> run(cmd); # execute the command
 ```
