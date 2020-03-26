@@ -1,11 +1,5 @@
 # test.jl
 
-using Dates
-
-using AppliGeneralLedger
-
-using AppliSales
-
 include("./infrastructure/infrastructure.jl")
 
 # see: https://github.com/JuliaDebug/Debugger.jl
@@ -28,7 +22,6 @@ const PATH_CSV = "./bank.csv"
 # get orders
 orders = AppliSales.process()
 @info("$(now()) - Orders received.");
-
 invnbr = 1000
 invoices = [create(order, "A" * string(global invnbr += 1)) for order in orders]
 @info("$(now()) - Unpaid invoices created.")
