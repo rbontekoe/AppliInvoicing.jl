@@ -1,6 +1,6 @@
-#using Dates
-#using AppliGeneralLedger
-#using AppliSales # needed for test.jl and runtests.jl
+using Dates
+using AppliGeneralLedger
+using AppliSales # needed for test.jl and runtests.jl
 
 include("./spec.jl")
 
