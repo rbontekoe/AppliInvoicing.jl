@@ -43,3 +43,8 @@ function conv2entry(inv::PaidInvoice, from::Int, to::Int)
     descr = inv.body.name_training
     return create_journal_entry(id, customer_id, invoice_nbr, from, to, debit, credit, vat, descr)
 end
+
+function report()
+	x = aging()
+	return x
+end
