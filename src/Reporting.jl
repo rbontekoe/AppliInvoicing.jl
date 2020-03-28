@@ -7,7 +7,7 @@ const PATH_DB = "./invoicing.sqlite"
 
 using Dates
 
-using AppliInvoicing
+using ..AppliInvoicing
 
 struct Aging
     id_inv::String
@@ -29,7 +29,8 @@ aging() = begin
         id = invoice.id
         csm = invoice.header.name
         inv_date = Date(invoice.meta.date)
-        amount = 1000.0
+        b = invoice.body
+        amount = (b.price_per_student * length(b.students)) * (1 + b.vat_perc)
         days = Dates.today() - inv_date
         aging_item = Aging(id, csm, inv_date, amount, days)
         push!(list, aging_item)
