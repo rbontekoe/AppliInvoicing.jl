@@ -24,54 +24,53 @@ Domain
             OpentrainingItem
         Header
         MetaInvoice
-
-julia> fieldnames(PaidInvoice)
-(:_id, :_meta, :_header, :_body, :_stm)
-
-julia> fieldnames(UnpaidInvoice)
-(:_id, :_meta, :_header, :_body)
-
-julia> fieldnames(BankStatement)
-(:date, :descr, :iban, :amount)
-
-julia> fieldnames(OpentrainingItem)
-(:name_training, :date, :price_per_student, :students, :vat_perc)
-
-julia> fieldnames(Header)
-(:invoice_nbr, :name, :address, :zip, :city, :country, :order_ref, :name_contact, :email_contact)
-
-julia> fieldnames(MetaInvoice)
-(:order_id, :training_id, :date, :currency, :currency_ratio)
-
-julia> fieldnames(BankStatement)
-(:date, :descr, :iban, :amount)
 ```
 
-## Getter functions for Invoice
-
-## id
-```@docs
-id
+## Accessor functions for Invoice
+```
+meta(i::Invoice)::MetaInvoice
+header(i::Invoice)::Header
+body(i::Invoice)::BodyItem
+id(i::Invoice)::String
 ```
 
-## meta
-```@docs
-meta
+## Accessor functions for MetaInvoice
+```
+order_id(m::MetaInvoice)::String
+training_id(m::MetaInvoice)::String
+date(m::MetaInvoice)::DateTime
+currency(m::MetaInvoice)::String
+currency_ratio(m::MetaInvoice)::Float64
 ```
 
-## header
-```@docs
-header
+## Accessor functions for Header
+```
+invoice_nbr(h::Header)::String
+name(h::Header)::String
+address(h::Header)::String
+zip(h::Header)::String
+city(h::Header)::String
+country(h::Header)::String
+order_ref(h::Header)::String
+name_contact(h::Header)::String
+email_contact(h::Header)::String
 ```
 
-## body
-```@docs
-body
+## Accessor functions for Opentraining
+```
+name_training(o::OpentrainingItem)::String
+date(o::OpentrainingItem)::DateTime
+price_per_student(o::OpentrainingItem)::Float64
+students(o::OpentrainingItem)::Array{String, 1}
+vat_perc(o::OpentrainingItem)::Float64
 ```
 
-## stm
-```@docs
-stm
+## Accessor function for BankStatement
+```
+date(b::BankStatement)::Date
+descr(b::BankStatement)::String
+iban(b::BankStatement)::String
+amount(b::BankStatement)::Float64
 ```
 
 ## Example

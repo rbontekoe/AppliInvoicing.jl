@@ -12,7 +12,7 @@ include("./infrastructure/infrastructure.jl")
 #logger = SimpleLogger(io)
 #global_logger(logger)
 
-@info("$(now()) - Test program started.")
+@info("$(now()) - Test program started.")subtypes(Invoice)subtypes(Invoice)
 
 const PATH_DB_TEST = "./test_invoicing.sqlite"
 @info("The database test_invoicing.sqlite will be removed permanently by the last two statements of this page.")

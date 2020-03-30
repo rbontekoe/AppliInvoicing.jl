@@ -7,7 +7,9 @@ const PATH_DB = "./invoicing.sqlite"
 
 using Dates
 
-using ..AppliInvoicing
+import ..AppliInvoicing: retrieve_unpaid_invoices, retrieve_paid_invoices
+
+import ..AppliInvoicing: id, name, date, meta, header, body, students, price_per_student, vat_perc
 
 struct Aging
     id_inv::String
@@ -18,21 +20,21 @@ struct Aging
 end
 
 aging() = begin
-    unpaid_invoices = AppliInvoicing.retrieve_unpaid_invoices(PATH_DB)
-    paid_invoices = AppliInvoicing.retrieve_paid_invoices(PATH_DB)
+    unpaid_invoices = retrieve_unpaid_invoices(PATH_DB)
+    paid_invoices = retrieve_paid_invoices(PATH_DB)
 
-    paid = [x._id for x in paid_invoices]
-    unpaid = filter(x -> x._id ∉ paid, unpaid_invoices)
+    paid = [id(x) for x in paid_invoices]
+    unpaid = filter(x -> id(x) ∉ paid, unpaid_invoices)
 
     list = []
     for invoice in unpaid
-        id = invoice._id
-        csm = invoice._header.name
-        inv_date = Date(invoice._meta.date)
-        b = invoice._body
-        amount = (b.price_per_student * length(b.students)) * (1 + b.vat_perc)
+        id_inv = id(invoice)
+        csm = name(header(invoice))
+        inv_date = Date(date(meta(invoice)))
+        b = body(invoice)
+        amount = (price_per_student(b) * length(students(b))) * (1 + vat_perc(b))
         days = Dates.today() - inv_date
-        aging_item = Aging(id, csm, inv_date, amount, days)
+        aging_item = Aging(id_inv, csm, inv_date, amount, days)
         push!(list, aging_item)
     end
     return list
