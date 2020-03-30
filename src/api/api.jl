@@ -13,35 +13,37 @@ create(order::Order, invoice_id::String)::UnpaidInvoice = begin
 	return UnpaidInvoice(invoice_id, meta, header_invoice, body_invoice)
 end
 
-create(invoice::UnpaidInvoice, stm::BankStatement)::PaidInvoice = begin
-	id = invoice.id
-	meta = invoice.meta
-	header = invoice.header
-	body = invoice.body
-	stm = stm
-	return PaidInvoice(id, meta, header, body, stm)
+create(invoice::UnpaidInvoice, bs::BankStatement)::PaidInvoice = begin
+	id_inv = id(invoice)
+	meta_inv = meta(invoice)
+	header_inv = header(invoice)
+	body_inv = body(invoice)
+	s = bs
+	return PaidInvoice(id_inv, meta_inv, header_inv, body_inv, s)
 end
 
 function conv2entry(inv::UnpaidInvoice, from::Int, to::Int)
     id = string(Date(now())) * "-" * string(global n += 1)
-    customer_id = inv.header.name
-    invoice_nbr = inv.header.invoice_nbr
-    debit = inv.body.price_per_student * length(inv.body.students)
+    customer_id = name(header(inv))
+	inv_nbr = invoice_nbr(header(inv))
+	b = body(inv)
+    debit = price_per_student(b) * length(students(b))
     credit = 0.0
-    vat = debit * inv.body.vat_perc
-    descr = inv.body.name_training
-    return create_journal_entry(id, customer_id, invoice_nbr, from, to, debit, credit, vat, descr)
+    vat = debit * vat_perc(b)
+    descr = name_training(b)
+    return create_journal_entry(id, customer_id, inv_nbr, from, to, debit, credit, vat, descr)
 end
 
 function conv2entry(inv::PaidInvoice, from::Int, to::Int)
     id = string(Date(now())) * "-" * string(global n += 1)
-    customer_id = inv.header.name
-    invoice_nbr = inv.header.invoice_nbr
-    debit = inv.stm.amount
+    customer_id = name(header(inv))
+    inv_nbr = invoice_nbr(header(inv))
+	b = body(inv)
+    debit = stm(inv).amount
     credit = 0.0
     vat = 0.0
-    descr = inv.body.name_training
-    return create_journal_entry(id, customer_id, invoice_nbr, from, to, debit, credit, vat, descr)
+    descr = name_training(b)
+    return create_journal_entry(id, customer_id, inv_nbr, from, to, debit, credit, vat, descr)
 end
 
 function report()

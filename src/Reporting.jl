@@ -21,15 +21,15 @@ aging() = begin
     unpaid_invoices = AppliInvoicing.retrieve_unpaid_invoices(PATH_DB)
     paid_invoices = AppliInvoicing.retrieve_paid_invoices(PATH_DB)
 
-    paid = [x.id for x in paid_invoices]
-    unpaid = filter(x -> x.id ∉ paid, unpaid_invoices)
+    paid = [x._id for x in paid_invoices]
+    unpaid = filter(x -> x._id ∉ paid, unpaid_invoices)
 
     list = []
     for invoice in unpaid
-        id = invoice.id
-        csm = invoice.header.name
-        inv_date = Date(invoice.meta.date)
-        b = invoice.body
+        id = invoice._id
+        csm = invoice._header.name
+        inv_date = Date(invoice._meta.date)
+        b = invoice._body
         amount = (b.price_per_student * length(b.students)) * (1 + b.vat_perc)
         days = Dates.today() - inv_date
         aging_item = Aging(id, csm, inv_date, amount, days)

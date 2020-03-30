@@ -43,9 +43,9 @@ process(path, invoices::Array{UnpaidInvoice, 1}, stms::Array{BankStatement, 1}) 
     # create array with potential paid invoices based on received bank statements
     potential_paid_invoices = []
     for unpaid_invoice in invoices
-      for stm in stms # get potential paid invoices
-        if occursin(unpaid_invoice.id, stm.descr) # description contains invoice number
-          push!(potential_paid_invoices, create(unpaid_invoice, stm))
+      for s in stms # get potential paid invoices
+        if occursin(id(unpaid_invoice), descr(s)) # description contains invoice number
+          push!(potential_paid_invoices, create(unpaid_invoice, s))
         end
       end
     end

@@ -24,13 +24,13 @@ end
     invoices = retrieve_unpaid_invoices(path)
     #invoices = SQLite.DBInterface.execute(db, "select * from UNPAID") |> DataFrame
 
-    @test invoices[1].id == "A1001"
-    @test invoices[1].meta.currency_ratio == 1.0
-    @test invoices[1].header.name == "Scrooge Investment Bank"
-    @test invoices[1].body.price_per_student == 1000.0
-    @test length(invoices[1].body.students) == 1
-    @test invoices[1].body.students[1] == "Scrooge McDuck"
-    @test invoices[1].body.vat_perc == 0.21
+    @test id(invoices[1]) == "A1001"
+    @test currency_ratio(meta(invoices[1])) == 1.0
+    @test name(header(invoices[1])) == "Scrooge Investment Bank"
+    @test price_per_student(body(invoices[1])) == 1000.0
+    @test length(students(body(invoices[1]))) == 1
+    @test students(body(invoices[1]))[1] == "Scrooge McDuck"
+    @test vat_perc(body(invoices[1])) == 0.21
 
     cmd = `rm test_invoicing.sqlite`
     run(cmd)
@@ -48,13 +48,13 @@ end
     unpaid_invoices = SQLite.DBInterface.execute(db, "select * from UNPAID") |> DataFrame
     invoices = [row[1] for row in eachrow(unpaid_invoices.item)] # dataframe to array
 
-    @test invoices[1].id == "A1001"
-    @test invoices[1].meta.currency_ratio == 1.0
-    @test invoices[1].header.name == "Scrooge Investment Bank"
-    @test length(invoices[1].body.students) == 1
-    @test invoices[1].body.price_per_student == 1000.0
-    @test invoices[1].body.students[1] == "Scrooge McDuck"
-    @test invoices[1].body.vat_perc == 0.21
+    @test id(invoices[1]) == "A1001"
+    @test currency_ratio(meta(invoices[1])) == 1.0
+    @test header(invoices[1]).name == "Scrooge Investment Bank"
+    @test length(students(body(invoices[1]))) == 1
+    @test price_per_student(body(invoices[1])) == 1000.0
+    @test students(body(invoices[1]))[1] == "Scrooge McDuck"
+    @test vat_perc(body(invoices[1])) == 0.21
 
     cmd = `rm test_invoicing.sqlite`
     run(cmd)
@@ -87,16 +87,16 @@ end
 
     potential_paid_invoices = []
     for unpaid_invoice in invoices
-      for stm in stms # get potential paid invoices
-        if occursin(unpaid_invoice.id, stm.descr) # description contains invoice number
-          push!(potential_paid_invoices, create(unpaid_invoice, stm))
+      for s in stms # get potential paid invoices
+        if occursin(id(unpaid_invoice), descr(s)) # description contains invoice number
+          push!(potential_paid_invoices, create(unpaid_invoice, s))
         end
       end
     end
 
     @test length(potential_paid_invoices) == 1
-    @test potential_paid_invoices[1].id == "A1002"
-    @test potential_paid_invoices[1].stm.amount == 2420.0
+    @test id(potential_paid_invoices[1]) == "A1002"
+    @test stm(potential_paid_invoices[1]).amount == 2420.0
 
     cmd = `rm test_invoicing.sqlite`
     run(cmd)
@@ -127,7 +127,7 @@ end
     unpaid_invoices = retrieve_unpaid_invoices(path)
     #unpaid_invoices = SQLite.DBInterface.execute(db, "select * from UNPAID") |> DataFrame
     @test length(unpaid_invoices) == 3
-    @test unpaid_invoices[1].id == "A1001"
+    @test id(unpaid_invoices[1]) == "A1001"
 
     cmd = `rm test_invoicing.sqlite`
     run(cmd)

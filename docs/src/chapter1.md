@@ -26,10 +26,10 @@ Domain
         MetaInvoice
 
 julia> fieldnames(PaidInvoice)
-(:id, :meta, :header, :body, :stm)
+(:_id, :_meta, :_header, :_body, :_stm)
 
 julia> fieldnames(UnpaidInvoice)
-(:id, :meta, :header, :body)
+(:_id, :_meta, :_header, :_body)
 
 julia> fieldnames(BankStatement)
 (:date, :descr, :iban, :amount)
@@ -42,6 +42,9 @@ julia> fieldnames(Header)
 
 julia> fieldnames(MetaInvoice)
 (:order_id, :training_id, :date, :currency, :currency_ratio)
+
+julia> fieldnames(BankStatement)
+(:date, :descr, :iban, :amount)
 ```
 
 ## Getter functions for Invoice
