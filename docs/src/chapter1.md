@@ -75,7 +75,7 @@ amount(b::BankStatement)::Float64
 
 ## Example
 ```
-julia> include("./src/infrastructure/infrastructure.jl"); # link to the model
+julia> include("./src/infrastructure/infrastructure.jl");
 
 julia> const PATH_DB_TEST = "./test_invoicing.sqlite";
 
@@ -85,16 +85,17 @@ julia> orders = AppliSales.process(); # get the orders
 
 julia> invnbr = 1000; # set starting invoice number
 
-julia> invoices = [create(order, "A" * string(global invnbr += 1)) for order in orders]; # create the invoices
-
-julia> journal_entries_1 = process(PATH_DB_TEST, orders); # # process the orders
+julia> journal_entries_1 = process(orders; path=PATH_DB_TEST); # # process the orders
 
 julia> stms = read_bank_statements(PATH_CSV); # retrieve the bank statemnets
 
-julia> unpaid_invoices = retrieve_unpaid_invoices(PATH_DB_TEST); # retrieve the unpaid invoices
+julia> unpaid_invoices = retrieve_unpaid_invoices(path=PATH_DB_TEST); # retrieve the unpaid invoices
 
 julia> id(unpaid_invoices[2]) # we will receive a payment for invoice A1002 in a later step
 "A1002"
+
+julia> meta(unpaid_invoices[2])
+MetaInvoice("13773275872094593946", "LS", 2020-03-31T10:29:36.885, "€", 1.0)
 
 julia> header(unpaid_invoices[2])
 Header("A1002", "Duck City Chronicals", "1185 Seven Seas Dr", "FL 32830", "Lake Buena Vista", "USA", "DD-001", "Mickey Mouse", "mickey@duckcity.com")
@@ -102,23 +103,12 @@ Header("A1002", "Duck City Chronicals", "1185 Seven Seas Dr", "FL 32830", "Lake 
 julia> body(unpaid_invoices[2])
 OpentrainingItem("Learn Smiling", 2019-08-30T00:00:00, 1000.0, ["Mini Mouse", "Goofy"], 0.21)
 
-julia> stm(unpaid_invoices[2]) # unpaid invoice doesn't have a field stm
-ERROR: MethodError: no method matching stm(::UnpaidInvoice)
-Closest candidates are:
-  stm(::PaidInvoice) at /home/rob/julia-projects/tc/AppliInvoicing/src/domain/domain.jl:75
+julia> journal_entries_2 = process(unpaid_invoices, stms; path=PATH_DB_TEST); # process the bank statements
 
-julia> journal_entries_2 = process(PATH_DB_TEST, unpaid_invoices, stms); # process the bank statements
-
-julia> paid_invoices = retrieve_paid_invoices(PATH_DB_TEST); # retrieve the paid invoices
+julia> paid_invoices = retrieve_paid_invoices(path=PATH_DB_TEST); # retrieve the paid invoices
 
 julia> id(paid_invoices[1]) # one of the paid invoices (see the step earlier retrieving the unpaid invoices)
 "A1002"
-
-julia> header(paid_invoices[1])
-Header("A1002", "Duck City Chronicals", "1185 Seven Seas Dr", "FL 32830", "Lake Buena Vista", "USA", "DD-001", "Mickey Mouse", "mickey@duckcity.com")
-
-julia> body(paid_invoices[1])
-OpentrainingItem("Learn Smiling", 2019-08-30T00:00:00, 1000.0, ["Mini Mouse", "Goofy"], 0.21)
 
 julia> stm(paid_invoices[1])
 BankStatement(2020-01-15, "Duck City Chronicals Invoice A1002", "NL93INGB", 2420.0)

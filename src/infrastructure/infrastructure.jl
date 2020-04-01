@@ -15,7 +15,7 @@ end # enumerator for TableName types
 # get last statement number for today
 n = 0
 
-process(path, orders::Array{Order, 1}) = begin
+process(orders::Array{Order, 1}; path="./test_invoicing.sqlite") = begin
     # connect to db
     db = connect(path)
 
@@ -36,7 +36,7 @@ process(path, orders::Array{Order, 1}) = begin
 end # process(path, orders::Array{Order, 1})
 
 #process(bankstm::Array(Bankstatement, 1) = begin
-process(path, invoices::Array{UnpaidInvoice, 1}, stms::Array{BankStatement, 1}) = begin
+process(invoices::Array{UnpaidInvoice, 1}, stms::Array{BankStatement, 1}; path="./test_invoicing.sqlite") = begin
     # connect to db
     db = connect(path)
 
@@ -72,7 +72,7 @@ read_bank_statements(path::String) = begin
     return [BankStatement(row[1], row[2], row[3], row[4]) for row in eachrow(df)]
 end # read_bank_statements
 
-retrieve_unpaid_invoices(path)::Array{UnpaidInvoice, 1} = begin
+retrieve_unpaid_invoices(path="./test_invoicing.sqlite")::Array{UnpaidInvoice, 1} = begin
     # connect to db
     db = connect(path)
 
@@ -91,7 +91,7 @@ retrieve_unpaid_invoices(path)::Array{UnpaidInvoice, 1} = begin
     return unpaid_invoices
 end # retrieve_unpaid_invoices
 
-retrieve_paid_invoices(path)::Array{PaidInvoice, 1} = begin
+retrieve_paid_invoices(path="./test_invoicing.sqlite")::Array{PaidInvoice, 1} = begin
     # connect to db
     db = connect(path)
 

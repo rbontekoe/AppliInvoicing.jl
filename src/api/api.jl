@@ -22,7 +22,7 @@ create(invoice::UnpaidInvoice, bs::BankStatement)::PaidInvoice = begin
 	return PaidInvoice(id_inv, meta_inv, header_inv, body_inv, s)
 end
 
-function conv2entry(inv::UnpaidInvoice, from::Int, to::Int)
+conv2entry(inv::UnpaidInvoice, from::Int, to::Int) = begin
     id = string(Date(now())) * "-" * string(global n += 1)
     customer_id = name(header(inv))
 	inv_nbr = invoice_nbr(header(inv))
@@ -34,12 +34,12 @@ function conv2entry(inv::UnpaidInvoice, from::Int, to::Int)
     return create_journal_entry(id, customer_id, inv_nbr, from, to, debit, credit, vat, descr)
 end
 
-function conv2entry(inv::PaidInvoice, from::Int, to::Int)
+conv2entry(inv::PaidInvoice, from::Int, to::Int) = begin
     id = string(Date(now())) * "-" * string(global n += 1)
     customer_id = name(header(inv))
     inv_nbr = invoice_nbr(header(inv))
 	b = body(inv)
-    debit = stm(inv).amount
+    debit = amount(stm(inv))
     credit = 0.0
     vat = 0.0
     descr = name_training(b)

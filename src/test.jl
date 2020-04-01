@@ -12,10 +12,7 @@ include("./infrastructure/infrastructure.jl")
 #logger = SimpleLogger(io)
 #global_logger(logger)
 
-@info("$(now()) - Test program started.")subtypes(Invoice)subtypes(Invoice)
-
-const PATH_DB_TEST = "./test_invoicing.sqlite"
-@info("The database test_invoicing.sqlite will be removed permanently by the last two statements of this page.")
+@info("$(now()) - Test program started.")
 
 const PATH_CSV = "./bank.csv"
 
@@ -26,21 +23,38 @@ invnbr = 1000
 invoices = [create(order, "A" * string(global invnbr += 1)) for order in orders]
 @info("$(now()) - Unpaid invoices created.")
 
+# first invoice
+invoice_1 = invoices[1]
+
+# meta data
+@info("$(now())", meta(invoice_1))
+
+# header
+@info("$(now())", header(invoice_1))
+
+# body
+@info("$(now())", body(invoice_1))
+
+# id
+@info("$(now())", id(invoice_1))
+
 # process orders
-journal_entries_1 = process(PATH_DB_TEST, orders)
+journal_entries_1 = process(orders)
 @info("$(now()) - Journal entries for unpaid invoices created.")
 
 # get Bank statements and the unpaid invoices
 stms = read_bank_statements(PATH_CSV)
 @info("$(now()) - Get bankstatement entries for testing.")
 
-unpaid_invoices = retrieve_unpaid_invoices(PATH_DB_TEST)
+unpaid_invoices = retrieve_unpaid_invoices()
 @info("$(now()) - Unpaid invoices retrieved from database.")
 
 # process the unpaid invoices and bank statements
-journal_entries_2 = process(PATH_DB_TEST, unpaid_invoices, stms)
+journal_entries_2 = process(unpaid_invoices, stms)
 @info("$(now()) - Journal entries for paid invoices created.")
 
+paid_invoices = retrieve_paid_invoices()
+@info("$(now()) - Paid invoices retrieved from database.")
 #flush(io) # needed when logging is enabled
 #@info("Test program finished")
 
@@ -52,4 +66,5 @@ journal_entries_2 = process(PATH_DB_TEST, unpaid_invoices, stms)
 # cleanup
 cmd = `rm ./test_invoicing.sqlite`
 run(cmd)
-@info("$(now()) - $PATH_DB_TEST removed")
+
+@info("$(now()) - databaseT removed")

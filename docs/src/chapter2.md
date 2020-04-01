@@ -4,8 +4,3 @@
 ```@docs
 create
 ```
-
-## conv2entry
-```@docs
-conv2entry
-```

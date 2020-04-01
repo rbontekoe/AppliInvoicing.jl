@@ -20,8 +20,8 @@ struct Aging
 end
 
 aging() = begin
-    unpaid_invoices = retrieve_unpaid_invoices(PATH_DB)
-    paid_invoices = retrieve_paid_invoices(PATH_DB)
+    unpaid_invoices = retrieve_unpaid_invoices(path=PATH_DB)
+    paid_invoices = retrieve_paid_invoices(path=PATH_DB)
 
     paid = [id(x) for x in paid_invoices]
     unpaid = filter(x -> id(x) ∉ paid, unpaid_invoices)

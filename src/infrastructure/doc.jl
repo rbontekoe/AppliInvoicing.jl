@@ -1,9 +1,9 @@
 # doc.jl - infrastructure
 
 """
-    process(path::String, ::Array{AppliSales.Order, 1})
+    process(::Array{AppliSales.Order, 1}; path="./test_invoices.sqlite")
 
-    process(path::String, ::Array{UnpaidInvoice, 1}, ::Array{AppliGeneralLedger.BankStatement, 1})
+    process(::Array{UnpaidInvoice, 1}, ::Array{AppliGeneralLedger.BankStatement, 1}; path="./test_invoices.sqlite")
 
 - Creates UnpaidInvoice's from AppliSale.Order's, archive them, and creates AppliGeneralLedger.Entry's for the general ledger.
 - Creates PaidInvoices's from UnpaidInvoices by using AppliGeneralLedger.BankStatement's, and creates AppliGeneralLedger.Entry's for the general ledger.
@@ -17,19 +17,17 @@ julia> using AppliGeneralLedger
 
 julia> using AppliInvoicing
 
-julia> const PATH_DB = "./test_invoicing.sqlite"
-
 julia> const PATH_CSV = "./bank.csv"
 
 julia> orders = AppliSales.process()
 
-julia> journal_entries_1 = AppliInvoicing.process(PATH_DB, orders)
+julia> journal_entries_1 = AppliInvoicing.process(orders)
 
 julia> stms = AppliInvoicing.read_bank_statements(PATH_CSV)
 
-julia> unpaid_invoices = retrieve_unpaid_invoices(PATH_DB)
+julia> unpaid_invoices = retrieve_unpaid_invoices()
 
-julia> journal_entries_2 = AppliInvoicing.process(PATH_DB, unpaid_invoices, stms)
+julia> journal_entries_2 = AppliInvoicing.process(unpaid_invoices, stms)
 
 julia> cmd = `rm test_invoicing.sqlite`
 
@@ -56,7 +54,7 @@ function read_bank_statements end
 
 
 """
-    retrieve_unpaid_invoices(path::String)::Array{UnpaidInvoice, 1}
+    retrieve_unpaid_invoices(path="./test_invoicing.sqlite")::Array{UnpaidInvoice, 1}
 
 Retrieves UnpaidInvoice's from a SQLite.jl database.
 
@@ -67,13 +65,11 @@ julia> using AppliSales
 
 julia> using AppliInvoicing
 
-julia> const PATH_DB = "./test_invoicing.sqlite"
-
 julia> orders = AppliSales.process()
 
-julia> AppliInvoicing.process(PATH_DB, orders)
+julia> AppliInvoicing.process(orders)
 
-julia> unpaid_invoices = retrieve_unpaid_invoices(PATH_DB)
+julia> unpaid_invoices = retrieve_unpaid_invoices()
 
 julia> cmd = `rm test_invoicing.sqlite`
 
@@ -83,7 +79,7 @@ julia> run(cmd)
 function retrieve_unpaid_invoices end
 
 """
-    retrieve_paid_invoices(path::String)::Array{PaidInvoice, 1}
+    retrieve_paid_invoices(path="./test_invoicing.sqlite")::Array{PaidInvoice, 1}
 
 Retrieves PaidInvoice's from a SQLite.jl database.
 
