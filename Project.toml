@@ -1,7 +1,7 @@
 name = "AppliInvoicing"
 uuid = "3941c6da-33b5-11ea-2884-afa98fed5e3b"
 authors = ["Rob Bontekoe <rbontekoe@appligate.nl>"]
-version = "0.3.0"
+version = "0.5.2"
 
 [deps]
 AppliGeneralLedger = "153ef306-36d1-11ea-1f0d-e3f38f84e10d"
