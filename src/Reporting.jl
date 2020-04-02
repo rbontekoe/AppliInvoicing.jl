@@ -3,9 +3,11 @@
 module Reporting
 
 
-const PATH_DB = "./invoicing.sqlite"
+const PATH_DB = "./test_invoicing.sqlite"
 
 using Dates
+
+export aging
 
 import ..AppliInvoicing: retrieve_unpaid_invoices, retrieve_paid_invoices
 
@@ -19,9 +21,10 @@ struct Aging
     days::Day
 end
 
-aging() = begin
-    unpaid_invoices = retrieve_unpaid_invoices(path=PATH_DB)
-    paid_invoices = retrieve_paid_invoices(path=PATH_DB)
+aging(path_db::String) = begin
+    @info(path_db)
+    unpaid_invoices = retrieve_unpaid_invoices(;path=path_db)
+    paid_invoices = retrieve_paid_invoices(;path=path_db)
 
     paid = [id(x) for x in paid_invoices]
     unpaid = filter(x -> id(x) ∉ paid, unpaid_invoices)

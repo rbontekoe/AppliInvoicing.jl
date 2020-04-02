@@ -72,7 +72,7 @@ read_bank_statements(path::String) = begin
     return [BankStatement(row[1], row[2], row[3], row[4]) for row in eachrow(df)]
 end # read_bank_statements
 
-retrieve_unpaid_invoices(path="./test_invoicing.sqlite")::Array{UnpaidInvoice, 1} = begin
+retrieve_unpaid_invoices(;path="./test_invoicing.sqlite")::Array{UnpaidInvoice, 1} = begin
     # connect to db
     db = connect(path)
 
@@ -91,7 +91,7 @@ retrieve_unpaid_invoices(path="./test_invoicing.sqlite")::Array{UnpaidInvoice, 1
     return unpaid_invoices
 end # retrieve_unpaid_invoices
 
-retrieve_paid_invoices(path="./test_invoicing.sqlite")::Array{PaidInvoice, 1} = begin
+retrieve_paid_invoices(;path="./test_invoicing.sqlite")::Array{PaidInvoice, 1} = begin
     # connect to db
     db = connect(path)
 

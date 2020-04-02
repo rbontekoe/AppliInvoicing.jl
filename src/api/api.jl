@@ -46,7 +46,8 @@ conv2entry(inv::PaidInvoice, from::Int, to::Int) = begin
     return create_journal_entry(id, customer_id, inv_nbr, from, to, debit, credit, vat, descr)
 end
 
-function report()
-	x = aging()
+function report(;path="./test_invoicing.sqlite")
+	@info(path)
+	x = Reporting.aging(path)
 	return x
 end
