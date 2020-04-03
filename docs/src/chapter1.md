@@ -1,4 +1,4 @@
-# 2. Domain structure and functions
+# 1. Domain structure and functions
 
 ## Domain structure
 
