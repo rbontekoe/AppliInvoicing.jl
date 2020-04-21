@@ -9,6 +9,7 @@ export id, meta, header, body, stm
 using Reexport
 @reexport using AppliSales
 @reexport using AppliGeneralLedger
+@reexport using DataFrames
 
 # first, link to the model
 include("./infrastructure/infrastructure.jl")

@@ -4,6 +4,8 @@ include("../src/infrastructure/infrastructure.jl")
 
 using Test
 
+using DataFrames
+
 # TEST MODEL
 @testset "Orders" begin
     using AppliSales
@@ -21,7 +23,7 @@ end
     orders = AppliSales.process()
     invoices_to_save = [create(order, "A" * string(invnbr += 1)) for order in orders]
     archive(db, "UNPAID", invoices_to_save)
-    invoices = retrieve_unpaid_invoices(path)
+    invoices = retrieve_unpaid_invoices(path=path)
     #invoices = SQLite.DBInterface.execute(db, "select * from UNPAID") |> DataFrame
 
     @test id(invoices[1]) == "A1001"
@@ -37,24 +39,18 @@ end
 end
 
 @testset "Retrieve UnpaidInvoices" begin
-    invnbr = 1000
-    path = "./test_invoicing.sqlite"
-    db = connect(path)
     using AppliSales
     orders = AppliSales.process()
-    invoices_to_save = [create(order, "A" * string(invnbr += 1)) for order in orders]
-    archive(db, "UNPAID", invoices_to_save)
-    #unpaid_invoices = retrieve(db, "UNPAID") # returns dataframe
-    unpaid_invoices = SQLite.DBInterface.execute(db, "select * from UNPAID") |> DataFrame
-    invoices = [row[1] for row in eachrow(unpaid_invoices.item)] # dataframe to array
+    process(orders)
+    unpaid_invoices = retrieve_unpaid_invoices()
 
-    @test id(invoices[1]) == "A1001"
-    @test currency_ratio(meta(invoices[1])) == 1.0
-    @test header(invoices[1]).name == "Scrooge Investment Bank"
-    @test length(students(body(invoices[1]))) == 1
-    @test price_per_student(body(invoices[1])) == 1000.0
-    @test students(body(invoices[1]))[1] == "Scrooge McDuck"
-    @test vat_perc(body(invoices[1])) == 0.21
+    @test id(unpaid_invoices[1]) == "A1001"
+    @test currency_ratio(meta(unpaid_invoices[1])) == 1.0
+    @test name(header(unpaid_invoices[1])) == "Scrooge Investment Bank"
+    @test length(students(body(unpaid_invoices[1]))) == 1
+    @test price_per_student(body(unpaid_invoices[1])) == 1000.0
+    @test first(students(body(unpaid_invoices[1]))) == "Scrooge McDuck"
+    @test vat_perc(body(unpaid_invoices[1])) == 0.21
 
     cmd = `rm test_invoicing.sqlite`
     run(cmd)
@@ -65,7 +61,7 @@ end
     stms = [BankStatement(Date(2020-01-15), "Duck City Chronicals Invoice A1002", "NL93INGB", 2420.0)]
     @test length(stms) == 1
     #@test length(stms) == 2
-    @test stms[1].amount == 2420.0
+    @test amount(stms[1]) == 2420.0
     #@test stms[2].amount == 1210.0
 end
 
@@ -73,17 +69,10 @@ end
     stm1 = BankStatement(Date(2020-01-15), "Duck City Chronicals Invoice A1002", "NL93INGB", 2420.0)
     stms = [stm1]
 
-    invnbr = 1000
-
-    path = "./test_invoicing.sqlite"
-    db = connect(path)
-    #using AppliSales
     orders = AppliSales.process()
-    invoices_to_save = [create(order, "A" * string(invnbr += 1)) for order in orders]
-    archive(db, "UNPAID", invoices_to_save)
-    #unpaid_invoices = retrieve(db, "UNPAID")
-    unpaid_invoices = SQLite.DBInterface.execute(db, "select * from UNPAID") |> DataFrame
-    invoices = unpaid_invoices.item
+    process(orders)
+
+    invoices = retrieve_unpaid_invoices()
 
     potential_paid_invoices = []
     for unpaid_invoice in invoices
@@ -96,17 +85,15 @@ end
 
     @test length(potential_paid_invoices) == 1
     @test id(potential_paid_invoices[1]) == "A1002"
-    @test stm(potential_paid_invoices[1]).amount == 2420.0
+    @test amount(stm((potential_paid_invoices[1]))) == 2420.0
 
     cmd = `rm test_invoicing.sqlite`
     run(cmd)
 end
 
 @testset "process(db, orders)" begin
-    path = "./test_invoicing.sqlite"
-    db = connect(path)
     orders = AppliSales.process()
-    entries = process(path, orders)
+    entries = process(orders)
     @test length(entries) == 3
     @test entries[1].from == 1300
     @test entries[1].to == 8000
@@ -118,14 +105,12 @@ end
     run(cmd)
 end
 
-#@testset "retrieve_unpaid_invoices(db)" begin
 @testset "retrieve_unpaid_invoices" begin
     path = "./test_invoicing.sqlite"
-    db = connect(path)
     orders = AppliSales.process()
-    entries = process(path, orders)
-    unpaid_invoices = retrieve_unpaid_invoices(path)
-    #unpaid_invoices = SQLite.DBInterface.execute(db, "select * from UNPAID") |> DataFrame
+    entries = process(orders; path=path)
+    unpaid_invoices = retrieve_unpaid_invoices(path=path)
+
     @test length(unpaid_invoices) == 3
     @test id(unpaid_invoices[1]) == "A1001"
 
@@ -133,17 +118,15 @@ end
     run(cmd)
 end
 
-@testset "process(db, unpaid_invoices)" begin
+@testset "process(unpaid_invoices)" begin
     path = "./test_invoicing.sqlite"
-    db = connect(path)
     orders = AppliSales.process()
-    process(path, orders)
-    unpaid_invoices = retrieve_unpaid_invoices(path)
-    #result = SQLite.DBInterface.execute(db, "select * from UNPAID") |> DataFrame
-    #unpaid_invoices = result.item
+    process(orders, path=path)
+    unpaid_invoices = retrieve_unpaid_invoices(path=path)
+
     stm1 = BankStatement(Date(2020-01-15), "Duck City Chronicals Invoice A1002", "NL93INGB", 2420.0)
     stms = [stm1]
-    entries = process(path, unpaid_invoices, stms)
+    entries = process(unpaid_invoices, stms; path=path)
     @test length(entries) == 1
     @test entries[1].from == 1150
     @test entries[1].to == 1300
@@ -157,7 +140,7 @@ end
     path = "./test_invoicing.sqlite"
     db = connect(path)
     orders = AppliSales.process()
-    process(path, orders)
+    process(orders; path=path)
     disconnect(db)
     try
         retrieve(db, "UNPAID")

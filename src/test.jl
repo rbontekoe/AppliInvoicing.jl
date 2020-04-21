@@ -2,6 +2,7 @@
 
 include("./infrastructure/infrastructure.jl")
 
+using DataFrames
 # see: https://github.com/JuliaDebug/Debugger.jl
 #using Debugger # use REPL for debugging
 
