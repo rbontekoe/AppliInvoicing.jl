@@ -1,12 +1,12 @@
 # This file is machine-generated - editing it directly is not advised
 
 [[AppliGeneralLedger]]
-deps = ["DataFrames", "Dates", "Serialization"]
-git-tree-sha1 = "f288978289e651b3f81de460ceb4914ba82c5f21"
+deps = ["DataFrames"]
+git-tree-sha1 = "fd5f3e580cfa8911ea2fee7dd7b669ae6f67e9e6"
 repo-rev = "master"
 repo-url = "https://github.com/rbontekoe/AppliGeneralLedger.jl"
-uuid = "153ef306-36d1-11ea-1f0d-e3f38f84e10d"
-version = "0.3.1"
+uuid = "091d2eb8-05c7-423c-82de-26b9e68923ef"
+version = "0.1.0"
 
 [[AppliSales]]
 deps = ["Dates"]
