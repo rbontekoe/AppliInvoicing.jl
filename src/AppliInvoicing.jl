@@ -6,11 +6,15 @@ export create, process, retrieve_unpaid_invoices, retrieve_paid_invoices, read_b
 
 export id, meta, header, body, stm
 
+using Reexport
+@reexport using AppliSales
+@reexport using AppliGeneralLedger
+
 # first, link to the model
 include("./infrastructure/infrastructure.jl")
 
 # next, submodule Reporting
 include("Reporting.jl")
-using .Reporting: aging
+@reexport using .Reporting: aging
 
 end # module
