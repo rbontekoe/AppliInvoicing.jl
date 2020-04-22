@@ -8,6 +8,14 @@ repo-url = "https://github.com/rbontekoe/AppliGeneralLedger.jl"
 uuid = "091d2eb8-05c7-423c-82de-26b9e68923ef"
 version = "0.1.0"
 
+[[AppliSales]]
+deps = ["Dates"]
+git-tree-sha1 = "0cda9204d402eea44cd391fd40cb00395c683623"
+repo-rev = "master"
+repo-url = "https://github.com/rbontekoe/AppliSales.jl"
+uuid = "a1ddd20a-2e39-11ea-38f9-6b919ef027c3"
+version = "0.1.0"
+
 [[Base64]]
 uuid = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
 
