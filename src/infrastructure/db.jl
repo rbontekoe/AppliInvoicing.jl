@@ -1,6 +1,7 @@
 # db.jl
 
 using SQLite
+using DataFrames
 
 # Database item
 struct DatabaseItem{T}
