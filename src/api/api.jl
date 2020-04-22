@@ -47,7 +47,7 @@ conv2entry(inv::PaidInvoice, from::Int, to::Int) = begin
 end
 
 function report(;path="./test_invoicing.sqlite")
-	@info(path)
+	#@info(path)
 	x = Reporting.aging(path)
 	return x
 end
